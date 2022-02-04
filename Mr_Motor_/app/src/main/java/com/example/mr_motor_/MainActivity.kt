@@ -18,12 +18,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         supportActionBar?.hide()
+        setTheme(R.style.splashScreenTheme)
         setContentView(R.layout.activity_main)
 
-        val bottomNavigationViewation : BottomNavigationView = findViewById(R.id.nav_view)
+        val bottomNavigationView : BottomNavigationView = findViewById(R.id.nav_view)
+        bottomNavigationView.itemIconTintList = null
         val radius = resources.getDimension(R.dimen.cornerSize)
 
-        val shapeDrawable : MaterialShapeDrawable = bottomNavigationViewation.background as MaterialShapeDrawable
+        val shapeDrawable : MaterialShapeDrawable = bottomNavigationView.background as MaterialShapeDrawable
         shapeDrawable.shapeAppearanceModel = shapeDrawable.shapeAppearanceModel
             .toBuilder()
             .setTopLeftCorner(CornerFamily.ROUNDED, radius)
@@ -37,7 +39,8 @@ class MainActivity : AppCompatActivity() {
             R.id.navigation_news, R.id.navigation_home, R.id.navigation_task_page
         ))
         setupActionBarWithNavController(navController, appBarDrawerToggle)
-        bottomNavigationViewation.setupWithNavController(navController)
+        bottomNavigationView.setupWithNavController(navController)
 
     }
+
 }

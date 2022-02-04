@@ -12,4 +12,6 @@
     <color name="background_color">#2D3436</color>
     <color name="search_bar_color">#EEEEEF</color>
     <color name="search_hint_color">#636E72</color>
+    <color name="secondary_black">#636E72</color>
+    <color name="light_blue">#74B9FF</color>
 </resources>
