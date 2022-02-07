@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/splashScreenTheme">
+        <activity android:name=".ui.news.detailsPage.NewsDetailsPage"></activity>
         <activity
             android:name=".MainActivity"
             android:exported="true">

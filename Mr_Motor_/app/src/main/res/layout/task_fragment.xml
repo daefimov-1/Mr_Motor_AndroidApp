@@ -9,7 +9,7 @@
     android:padding="13dp">
 
     <TextView
-        android:id="@+id/tv_news"
+        android:id="@+id/tv_quizes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Quizzes"
@@ -22,6 +22,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_quizPage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_quizes"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="23dp"/>
 
 
 

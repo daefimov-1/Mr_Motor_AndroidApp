@@ -10,13 +10,14 @@
         android:id="@+id/iv_car_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:src="@drawable/car_news_viewholder"
+        android:src="@drawable/car_news_viewholder"
         android:background="@drawable/rounded_corners"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:scaleType="fitXY"/>
 
     <TextView
+        android:id="@+id/tv_newsViewHolder_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -29,6 +30,7 @@
         />
 
     <TextView
+        android:id="@+id/tv_newsViewHolder_linq"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -54,7 +56,7 @@
         android:layout_marginRight="9dp"
         />
 
-    <ImageView android:id="@+id/iv_star"
+    <ImageView android:id="@+id/iv_newsViewHolder_star"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_star"
