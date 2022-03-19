@@ -1,6 +1,8 @@
 
 package com.example.mr_motor_
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.NavController
@@ -9,6 +11,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.mr_motor_.models.News
+import com.example.mr_motor_.ui.news.detailsPage.NewsDetailsPage
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
@@ -41,6 +45,14 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarDrawerToggle)
         bottomNavigationView.setupWithNavController(navController)
 
+    }
+
+    companion object{
+
+        fun start(caller: Activity, news: News? ){
+            val intent : Intent = Intent(caller, MainActivity::class.java)
+            caller.startActivity(intent)
+        }
     }
 
 }

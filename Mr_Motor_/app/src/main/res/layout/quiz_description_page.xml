@@ -71,7 +71,7 @@
         android:textSize="18sp"
         tools:text="Lorem, ipsum dolor sit amet consectetur adipisicing, elit. Nobis, dolores, nemo. Quas dicta temporibus voluptatibus nostrum debitis ex eligendi, libero inventore, totam tempore ipsam est excepturi deserunt laborum distinctio voluptas eius delectus, natus! Libero omnis magni vero voluptates suscipit illum earum magnam minima, veritatis perferendis dolore consectetur eius minus voluptate?"/>
 
-    <Button android:id="@+id/btn_"
+    <Button android:id="@+id/btn_start_quiz"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

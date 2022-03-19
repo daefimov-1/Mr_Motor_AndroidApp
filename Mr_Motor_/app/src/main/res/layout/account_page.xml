@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background_color">
+
+    <ImageButton
+        android:id="@+id/ib_account_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:src="@drawable/ic_person_circle"
+        android:background="@color/background_color"
+
+        android:layout_marginTop="60dp"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:src="@drawable/ic_edit"
+        android:background="@color/background_color"
+        android:layout_marginTop="27dp"
+        android:layout_marginRight="20dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/ib_account_photo"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:text="Radimir Karabash"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginTop="18dp"/>
+
+    <TextView
+        android:id="@+id/tv_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_name"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:text="radimir.karabash@gmail.com"
+        android:textColor="#DFE6E9"
+        android:textSize="20sp"
+        android:textStyle="normal"
+        android:layout_marginTop="3dp"/>
+
+    <View android:id="@+id/v_frame_1"
+        android:layout_width="match_parent"
+        android:layout_height="164dp"
+        android:background="@drawable/rounded_corners"
+        android:backgroundTint="@color/dark_blue"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_email"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="13dp"
+        android:layout_marginRight="13dp"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/v_frame_1"
+        app:layout_constraintTop_toTopOf="@id/v_frame_1"
+        android:src="@drawable/ic_bookmark_favourite"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="31dp"/>
+
+    <TextView
+        android:layout_width="127dp"
+        android:layout_height="wrap_content"
+        android:text="@string/favourite_news_and_posts"
+        app:layout_constraintRight_toRightOf="@id/v_frame_1"
+        app:layout_constraintTop_toTopOf="@id/v_frame_1"
+        android:textSize="24sp"
+        android:textColor="@color/white"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"/>
+
+    <View android:id="@+id/v_frame_2"
+        android:layout_width="0dp"
+        android:layout_height="160dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/v_frame_1"
+        app:layout_constraintRight_toLeftOf="@id/v_divider"
+        android:background="@drawable/rounded_corners"
+        android:backgroundTint="@color/light_orange"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="13dp"
+        android:layout_marginTop="22dp"
+        />
+
+    <View android:id="@+id/v_frame_3"
+        android:layout_width="0dp"
+        android:layout_height="160dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/v_divider"
+        app:layout_constraintTop_toBottomOf="@id/v_frame_1"
+        android:background="@drawable/rounded_corners"
+        android:backgroundTint="@color/mint_green"
+        android:layout_marginRight="13dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="22dp"
+        />
+
+    <View
+        android:id="@+id/v_divider"
+        android:layout_width="2dp"
+        android:layout_height="160dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/v_frame_1"/>
+
+    <ImageView
+        android:layout_width="75dp"
+        android:layout_height="58dp"
+        app:layout_constraintRight_toRightOf="@id/v_frame_2"
+        app:layout_constraintBottom_toBottomOf="@id/v_frame_2"
+        android:src="@drawable/ic_tasklist_accent"
+        android:layout_marginBottom="16dp"
+        />
+
+    <TextView
+        android:layout_width="101dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/v_frame_2"
+        app:layout_constraintLeft_toLeftOf="@id/v_frame_2"
+        android:text="@string/my_quizzes"
+        android:textSize="24sp"
+        android:textColor="@color/white"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="14dp"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="@id/v_frame_3"
+        app:layout_constraintBottom_toBottomOf="@id/v_frame_3"
+        android:src="@drawable/ic_results"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="15dp"
+        />
+
+    <TextView
+        android:layout_width="101dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/v_frame_3"
+        app:layout_constraintLeft_toLeftOf="@id/v_frame_3"
+        android:text="My Quiz Results"
+        android:textSize="24sp"
+        android:textColor="@color/white"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="14dp"
+        />
+
+    <Button android:id="@+id/btn_logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/v_frame_2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:backgroundTint="@color/accent"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginLeft="14dp"
+        android:text="@string/logout"
+        android:textColor="@color/black"
+        android:layout_marginBottom="20dp"
+
+        />
+
+    
+</androidx.constraintlayout.widget.ConstraintLayout>

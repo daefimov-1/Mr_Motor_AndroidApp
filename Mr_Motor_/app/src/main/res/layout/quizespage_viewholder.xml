@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:backgroundTint="@color/light_blue"
     android:background="@drawable/rectangle_rounded"
+    android:layout_marginBottom="8dp"
     >
 
     <TextView
@@ -29,6 +30,8 @@
         android:layout_marginRight="17dp"
         android:layout_marginBottom="5dp"
         />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
