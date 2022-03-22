@@ -55,4 +55,14 @@ class SessionManager (context: Context) {
         val json: String? = prefs.getString(USER_DETAILS, null)
         return gson.fromJson(json, UserResponse::class.java)
     }
+
+    /**
+     * Function to delete user details and token
+     */
+    fun deleteUserData() {
+        val editor = prefs.edit()
+        editor.remove(USER_TOKEN)
+        editor.remove(USER_DETAILS)
+        editor.apply()
+    }
 }

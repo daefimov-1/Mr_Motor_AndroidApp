@@ -19,5 +19,9 @@
     <string name="favourite_news_and_posts">Favourite news and posts</string>
     <string name="my_quizzes">My Quizzes</string>
     <string name="logout">LOGOUT</string>
+    <string name="change_password">Change password</string>
+    <string name="new_password">New password</string>
+    <string name="repeat_new_password">Repeat new password</string>
+
 
 </resources>
