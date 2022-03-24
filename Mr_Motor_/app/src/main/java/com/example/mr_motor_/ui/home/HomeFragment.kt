@@ -1,15 +1,19 @@
 package com.example.mr_motor_.ui.home
 
+import android.graphics.BitmapFactory
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.TextView
 import com.example.mr_motor_.R
 import com.example.mr_motor_.login.SessionManager
+import com.example.mr_motor_.models.UserResponse
 import com.example.mr_motor_.ui.AccountPage
 import com.example.mr_motor_.ui.LoginActivity
 
@@ -41,8 +45,45 @@ class HomeFragment : Fragment() {
             }
 
         }
+
+        val sessionManager : SessionManager = SessionManager(requireContext())
+        val user : UserResponse? = sessionManager.fetchUser()
+
+        if(user != null){
+
+            if(user.avatar.isNotEmpty()){
+                var encoded : String = user.avatar.substring(user.avatar.indexOf(',')+1)
+
+                val decodedString: ByteArray = Base64.decode(encoded, Base64.DEFAULT)
+                val bitmap =
+                    BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+                accountButton?.setImageBitmap(bitmap)
+            }
+
+        }
+
         return view
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val sessionManager : SessionManager = SessionManager(requireContext())
+        val user : UserResponse? = sessionManager.fetchUser()
+
+        if(user != null){
+
+            if(user.avatar.isNotEmpty()){
+                var encoded : String = user.avatar.substring(user.avatar.indexOf(',')+1)
+
+                val decodedString: ByteArray = Base64.decode(encoded, Base64.DEFAULT)
+                val bitmap =
+                    BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+                accountButton?.setImageBitmap(bitmap)
+            }
+
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

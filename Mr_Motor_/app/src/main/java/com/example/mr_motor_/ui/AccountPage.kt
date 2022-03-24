@@ -1,11 +1,13 @@
 package com.example.mr_motor_.ui
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
-import android.view.Window
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
@@ -18,6 +20,8 @@ import com.google.android.material.transition.platform.MaterialSharedAxis
 class AccountPage : AppCompatActivity() {
 
     private lateinit var buttonEdit : ImageButton
+    private lateinit var avatar : ImageView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -44,16 +48,50 @@ class AccountPage : AppCompatActivity() {
             AccountSettingsPage.start(this)
         }
 
+        avatar = findViewById(R.id.iv_account_photo)
+
         val sessionManager : SessionManager = SessionManager(this)
         val user : UserResponse? = sessionManager.fetchUser()
 
         if(user != null){
             findViewById<TextView>(R.id.tv_name).text = user.name
             findViewById<TextView>(R.id.tv_email).text = user.email
+
+            if(user.avatar.isNotEmpty()){
+                var encoded : String = user.avatar.substring(user.avatar.indexOf(',')+1)
+
+                val decodedString: ByteArray = Base64.decode(encoded, Base64.DEFAULT)
+                val bitmap =
+                    BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+                avatar.setImageBitmap(bitmap)
+            }
+
         }
         findViewById<Button>(R.id.btn_logout).setOnClickListener {
             sessionManager.deleteUserData()
             finish()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val sessionManager : SessionManager = SessionManager(this)
+        val user : UserResponse? = sessionManager.fetchUser()
+
+        if(user != null){
+            findViewById<TextView>(R.id.tv_name).text = user.name
+            findViewById<TextView>(R.id.tv_email).text = user.email
+
+            if(user.avatar.isNotEmpty()){
+                var encoded : String = user.avatar.substring(user.avatar.indexOf(',')+1)
+
+                val decodedString: ByteArray = Base64.decode(encoded, Base64.DEFAULT)
+                val bitmap =
+                    BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+                avatar.setImageBitmap(bitmap)
+            }
+
         }
     }
 
