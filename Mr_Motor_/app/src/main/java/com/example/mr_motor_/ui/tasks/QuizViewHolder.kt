@@ -5,7 +5,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mr_motor_.R
-import com.example.mr_motor_.models.News
 import com.example.mr_motor_.models.Quiz
 
 class QuizViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {

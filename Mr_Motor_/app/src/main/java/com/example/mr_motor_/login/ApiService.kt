@@ -29,4 +29,7 @@ interface ApiService {
         @Body request: SignUpRequest,
         @Header("Authorization") authHeader: String?
     ): Call<UserResponse>
+
+    @GET(Constants.NEWS_URL)
+    fun get_news() : Call<PostResponse>
 }

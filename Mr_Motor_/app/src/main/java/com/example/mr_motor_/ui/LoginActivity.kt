@@ -1,6 +1,5 @@
 package com.example.mr_motor_.ui
 
-import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,13 +7,11 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.FragmentActivity
-import com.example.mr_motor_.MainActivity
 import com.example.mr_motor_.R
 import com.example.mr_motor_.login.ApiClient
 import com.example.mr_motor_.login.SessionManager
 import com.example.mr_motor_.models.LoginRequest
 import com.example.mr_motor_.models.LoginResponse
-import com.example.mr_motor_.models.News
 import com.example.mr_motor_.models.UserResponse
 import retrofit2.Call
 import retrofit2.Callback

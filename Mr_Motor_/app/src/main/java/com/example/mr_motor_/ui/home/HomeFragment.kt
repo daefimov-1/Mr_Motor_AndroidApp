@@ -84,6 +84,9 @@ class HomeFragment : Fragment() {
             }
 
         }
+        else{
+            accountButton?.setImageResource(R.drawable.ic_person_circle)
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

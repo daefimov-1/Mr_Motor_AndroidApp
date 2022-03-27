@@ -60,4 +60,7 @@ dependencies {
 
     //Making avatar circle shape
     implementation 'androidx.cardview:cardview:1.0.0'
+
+    //Picasso for images from url
+    implementation 'com.squareup.picasso:picasso:2.5.2'
 }

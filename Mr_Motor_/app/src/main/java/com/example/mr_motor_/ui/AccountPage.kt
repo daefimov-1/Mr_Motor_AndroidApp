@@ -99,7 +99,6 @@ class AccountPage : AppCompatActivity() {
         fun start(caller : FragmentActivity?){
             val intent : Intent = Intent(caller, AccountPage::class.java)
             caller?.startActivity(intent)
-            Log.e("STARTING_ACCOUNTPAGE", "starts")
         }
     }
 }
