@@ -63,4 +63,8 @@ dependencies {
 
     //Picasso for images from url
     implementation 'com.squareup.picasso:picasso:2.5.2'
+
+    //Gif for splash screen
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.17'
+    implementation group: 'commons-io', name: 'commons-io', version: '2.7'
 }

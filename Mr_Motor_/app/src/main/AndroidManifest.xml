@@ -3,8 +3,8 @@
     package="com.example.mr_motor_">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/splashScreenTheme">
-        <activity android:name=".ui.ForgotPasswordPage"></activity>
+        <activity android:name=".ui.SplashScreen"></activity>
+        <activity android:name=".ui.ForgotPasswordPage" />
         <activity android:name=".ui.SignUpPage" />
         <activity android:name=".ui.AccountSettingsPage" />
         <activity android:name=".ui.AccountPage" />

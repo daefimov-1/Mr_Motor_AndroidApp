@@ -20,6 +20,7 @@
         android:innerRadius="0dp"
         android:thicknessRatio="1.9">
         <ImageView
+            android:background="@color/background_color"
             android:id="@+id/iv_news_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
