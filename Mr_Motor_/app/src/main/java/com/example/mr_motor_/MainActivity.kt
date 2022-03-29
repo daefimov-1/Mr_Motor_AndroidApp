@@ -1,6 +1,8 @@
 
 package com.example.mr_motor_
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.NavController
@@ -41,5 +43,12 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarDrawerToggle)
         bottomNavigationView.setupWithNavController(navController)
 
+    }
+
+    companion object{
+        fun start(caller : Activity){
+            val intent : Intent = Intent(caller, MainActivity::class.java)
+            caller.startActivity(intent)
+        }
     }
 }
