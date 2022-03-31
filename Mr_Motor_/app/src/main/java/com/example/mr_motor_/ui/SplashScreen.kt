@@ -1,6 +1,7 @@
 package com.example.mr_motor_.ui
 
 import android.graphics.drawable.Drawable
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
@@ -20,6 +21,7 @@ class SplashScreen : AppCompatActivity() {
 
     private lateinit var sessionManager: SessionManager
     private lateinit var apiClient: ApiClient
+    private lateinit var mediaPlayer: MediaPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +35,13 @@ class SplashScreen : AppCompatActivity() {
         apiClient = ApiClient()
         sessionManager = SessionManager(this)
 
+        playAudio()
         takeNews()
+    }
+
+    private fun playAudio(){
+        mediaPlayer = MediaPlayer.create(this, R.raw.audio_cars)
+        mediaPlayer.start()
     }
 
     private fun takeNews(){
@@ -52,5 +60,10 @@ class SplashScreen : AppCompatActivity() {
                 finish()
             }
         })
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mediaPlayer.stop()
     }
 }

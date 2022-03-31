@@ -42,9 +42,10 @@
                android:alpha="0" />
        </KeyFrameSet>
         <OnSwipe
-            motion:touchAnchorId="@+id/iv_image_for_news"
-            motion:touchAnchorSide="bottom" />
-        <OnClick motion:targetId="@+id/tv_text" />
+            motion:dragDirection="dragUp"
+            motion:touchAnchorId="@+id/nsv_scrollview"
+            motion:moveWhenScrollAtTop="true"
+            />
     </Transition>
 
     <ConstraintSet android:id="@+id/start">
