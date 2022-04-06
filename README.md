@@ -11,5 +11,5 @@ CallBacks
 Clean Architecture (не на всех activity)  
 Mediaplayer  
 Gif (для SplashScreen)  
-AlerDialog  
+AlertDialog  
 Taking photo with camera or from gallery
