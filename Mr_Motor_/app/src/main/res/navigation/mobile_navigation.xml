@@ -7,16 +7,16 @@
 
     <fragment
         android:id="@+id/navigation_news"
-        android:name="com.example.mr_motor_.ui.news.NewsFragment"
+        android:name="com.example.mr_motor_.presentation.news.NewsFragment"
         tools:layout="@layout/news_fragment" />
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.mr_motor_.ui.home.HomeFragment"
+        android:name="com.example.mr_motor_.presentation.home.HomeFragment"
         tools:layout="@layout/home_fragment" />
 
     <fragment
         android:id="@+id/navigation_task_page"
-        android:name="com.example.mr_motor_.ui.tasks.TaskFragment"
+        android:name="com.example.mr_motor_.presentation.tasks.TaskFragment"
         tools:layout="@layout/task_fragment" />
 </navigation>

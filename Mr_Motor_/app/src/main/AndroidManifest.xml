@@ -13,9 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/splashScreenTheme">
-        <activity android:name=".ui.NoInternetPage"></activity>
+        <activity android:name=".presentation.NoInternetPage"></activity>
         <activity
-            android:name=".ui.SplashScreen"
+            android:name=".presentation.SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,16 +23,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.ForgotPasswordPage" />
-        <activity android:name=".ui.SignUpPage" />
-        <activity android:name=".ui.AccountSettingsPage" />
-        <activity android:name=".ui.AccountPage" />
+        <activity android:name=".presentation.ForgotPasswordPage" />
+        <activity android:name=".presentation.SignUpPage" />
+        <activity android:name=".presentation.AccountSettingsPage" />
+        <activity android:name=".presentation.AccountPage" />
         <activity
-            android:name=".ui.LoginActivity"
+            android:name=".presentation.LoginActivity"
             android:exported="true" />
-        <activity android:name=".ui.news.detailsPage.NewsDetailsPage" />
+        <activity android:name=".presentation.news.detailsPage.NewsDetailsPage" />
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.MainActivity"
             android:exported="true"></activity>
     </application>
 
