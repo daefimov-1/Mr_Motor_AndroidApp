@@ -32,6 +32,7 @@ class NoInternetPage : AppCompatActivity() {
         sessionManager = SessionManager(this)
 
         button.setOnClickListener {
+            it.isClickable = false
             tryTakeNews()
         }
 
@@ -44,6 +45,7 @@ class NoInternetPage : AppCompatActivity() {
                 Log.e("NOINTERNET_APICLIENT", "news cannot be taken")
                 val toast : Toast = Toast.makeText(this@NoInternetPage, "No internet connection", Toast.LENGTH_LONG)
                 toast.show()
+                button.isClickable = true
             }
 
             override fun onResponse(call: Call<PostResponse>, response: Response<PostResponse>) {

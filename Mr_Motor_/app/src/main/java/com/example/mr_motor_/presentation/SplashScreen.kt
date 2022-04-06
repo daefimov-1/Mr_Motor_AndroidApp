@@ -40,7 +40,7 @@ class SplashScreen : AppCompatActivity() {
     }
 
     private fun takeNews(){
-        ApiClient.getApiService().get_news().enqueue(object : Callback<PostResponse> {
+        ApiClient.getLongerConnectionApiService().get_news().enqueue(object : Callback<PostResponse> {
             override fun onFailure(call: Call<PostResponse>, t: Throwable) {
                 t.printStackTrace()
                 Log.e("SPLASHSCREEN_APICLIENT", "news cannot be taken")

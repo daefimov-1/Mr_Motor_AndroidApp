@@ -6,7 +6,7 @@
     <Transition
         motion:constraintSetEnd="@+id/end"
         motion:constraintSetStart="@id/start"
-        motion:duration="1000"
+        motion:duration="7000"
         motion:autoTransition="jumpToStart">
        <KeyFrameSet>
        </KeyFrameSet>
@@ -25,6 +25,6 @@
             motion:layout_constraintLeft_toLeftOf="parent"
             motion:layout_constraintRight_toRightOf="parent"
             android:layout_marginTop="20dp"
-            android:rotation="360" />
+            android:rotation="1440" />
     </ConstraintSet>
 </MotionScene>
