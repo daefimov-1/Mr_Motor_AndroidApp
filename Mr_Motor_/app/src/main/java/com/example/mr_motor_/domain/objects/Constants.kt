@@ -10,4 +10,7 @@ object Constants {
     const val FORGOTPASSWORD_URL = "users/forgot_password"
     const val SIGNUP_URL = "users/registrations"
     const val UPDATE_URL = "users"
+    const val RACERS_URL = "posts/get_by_type?type=RACER"
+    const val COMPETITIONS_URL = "posts/get_by_type?type=COMPETITION"
+    const val CARS_URL = "posts/get_by_type?type=CAR"
 }

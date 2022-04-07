@@ -1,21 +1,26 @@
 
 package com.example.mr_motor_.presentation
 
+import android.R.id.button1
+import android.R.id.button2
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
+import android.view.animation.AnimationUtils
+import android.widget.ImageButton
+import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.motion.widget.MotionLayout
 import com.example.mr_motor_.R
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.shape.CornerFamily
-import com.google.android.material.shape.MaterialShapeDrawable
+import com.example.mr_motor_.presentation.home.HomeFragment
+import com.example.mr_motor_.presentation.news.NewsFragment
+import com.example.mr_motor_.presentation.tasks.TaskFragment
+
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var homeButton : ImageButton
+    private lateinit var newsButton : ImageButton
+    private lateinit var quizButton : ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,25 +29,42 @@ class MainActivity : AppCompatActivity() {
         setTheme(R.style.splashScreenTheme)
         setContentView(R.layout.activity_main)
 
-        val bottomNavigationView : BottomNavigationView = findViewById(R.id.nav_view)
-        bottomNavigationView.itemIconTintList = null
-        val radius = resources.getDimension(R.dimen.cornerSize)
+        homeButton = findViewById(R.id.ib_homePage)
+        newsButton = findViewById(R.id.ib_newsPage)
+        quizButton = findViewById(R.id.ib_quizPage)
 
-        val shapeDrawable : MaterialShapeDrawable = bottomNavigationView.background as MaterialShapeDrawable
-        shapeDrawable.shapeAppearanceModel = shapeDrawable.shapeAppearanceModel
-            .toBuilder()
-            .setTopLeftCorner(CornerFamily.ROUNDED, radius)
-            .setTopRightCorner(CornerFamily.ROUNDED, radius)
-            .build()
+        val homeFragment = HomeFragment()
+        val newsFragment = NewsFragment()
+        val quizFragment = TaskFragment()
 
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
-        val navController: NavController = navHostFragment.navController
-        val appBarDrawerToggle = AppBarConfiguration(setOf(
-            R.id.navigation_news, R.id.navigation_home, R.id.navigation_task_page
-        ))
-        setupActionBarWithNavController(navController, appBarDrawerToggle)
-        bottomNavigationView.setupWithNavController(navController)
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fl_fragments, homeFragment)
+            commit()
+        }
+
+        val bounceAnimation = AnimationUtils.loadAnimation(this, R.anim.bounce_animation)
+
+        homeButton.setOnClickListener {
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fl_fragments, homeFragment)
+                commit()
+            }
+            homeButton.startAnimation(bounceAnimation)
+        }
+        newsButton.setOnClickListener {
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fl_fragments, newsFragment)
+                commit()
+            }
+            newsButton.startAnimation(bounceAnimation)
+        }
+        quizButton.setOnClickListener {
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fl_fragments, quizFragment)
+                commit()
+            }
+            quizButton.startAnimation(bounceAnimation)
+        }
 
     }
 
