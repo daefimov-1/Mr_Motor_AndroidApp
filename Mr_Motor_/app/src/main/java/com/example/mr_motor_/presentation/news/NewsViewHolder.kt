@@ -20,7 +20,7 @@ class NewsViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
         this.news = news
         title.text = news?.title ?: "noting (fun bind NewsViewHolder)"
         star.setImageResource(R.drawable.ic_star_favourite)
-        linq.text = getSource(news?.thumbnail.toString())
+        linq.text = getSource(news?.source.toString())
         Picasso.with(itemView.context).load(news?.thumbnail).into(background)
 
 //        if(news?.favourite == true){
@@ -32,13 +32,9 @@ class NewsViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
     }
 
     private fun getSource(str : String) : String {
-        var indexOfPoint = str.lastIndexOf('.')
-        var allThroughPoint = str.substring(0, indexOfPoint)
-        indexOfPoint = allThroughPoint.lastIndexOf('.')
-        allThroughPoint = allThroughPoint.substring(indexOfPoint)
-        allThroughPoint = allThroughPoint.substring(0, allThroughPoint.indexOf('/'))
 
-        return str.substring(0, indexOfPoint) + allThroughPoint
+
+        return str.split("/")[2]
     }
     init {
         itemView.setOnClickListener {
