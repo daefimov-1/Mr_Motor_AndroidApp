@@ -68,7 +68,7 @@ class SessionManager (context: Context) {
     }
 
     /**
-     * Function to save news when they are uploaded on splash screen
+     * Function to save posts when they are uploaded on splash screen
      */
     fun saveNewsArray(list: List<Post>?){
         val editor = prefs.edit()
@@ -79,7 +79,7 @@ class SessionManager (context: Context) {
     }
 
     /**
-     * Function to fetch news list
+     * Function to fetch posts list
      */
     fun fetchNewsList(): List<Post> {
         val gson = Gson()

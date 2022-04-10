@@ -1,4 +1,4 @@
-package com.example.mr_motor_.presentation.news
+package com.example.mr_motor_.presentation.posts
 
 import android.content.Context
 import android.view.LayoutInflater

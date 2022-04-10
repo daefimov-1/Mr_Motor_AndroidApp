@@ -20,6 +20,7 @@ class LoginUseCase(private val userRepository: UserRepository, private val callb
             .enqueue(object : Callback<LoginResponse> {
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                     Log.e("SAVE_TOKEN", "failed")
+                    callback.response(false)
                 }
 
                 override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
@@ -43,6 +44,7 @@ class LoginUseCase(private val userRepository: UserRepository, private val callb
             Callback<UserResponse> {
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 Log.e("LOADFROMSERVER", "load failed")
+                callback.response(false)
             }
 
             override fun onResponse(
@@ -53,7 +55,7 @@ class LoginUseCase(private val userRepository: UserRepository, private val callb
                 if (userResponse != null) {
                     Log.e("LOADFROMSERVER", "load good")
                     userRepository.saveUserData(userResponse)
-                    callback.response()
+                    callback.response(true)
                 }
 
             }

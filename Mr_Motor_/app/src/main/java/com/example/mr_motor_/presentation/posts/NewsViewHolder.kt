@@ -1,4 +1,4 @@
-package com.example.mr_motor_.presentation.news
+package com.example.mr_motor_.presentation.posts
 
 import android.app.Activity
 import android.view.View
@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mr_motor_.R
 import com.example.mr_motor_.domain.models.Post
-import com.example.mr_motor_.presentation.news.detailsPage.NewsDetailsPage
+import com.example.mr_motor_.presentation.posts.detailsPage.NewsDetailsPage
 import com.squareup.picasso.Picasso
 
 class NewsViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
@@ -23,7 +23,7 @@ class NewsViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
         linq.text = getSource(news?.source.toString())
         Picasso.with(itemView.context).load(news?.thumbnail).into(background)
 
-//        if(news?.favourite == true){
+//        if(posts?.favourite == true){
 //            star.setImageResource(R.drawable.ic_star_favourite)
 //        }
 //        else{

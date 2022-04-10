@@ -1,18 +1,15 @@
 
 package com.example.mr_motor_.presentation
 
-import android.R.id.button1
-import android.R.id.button2
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.animation.AnimationUtils
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.motion.widget.MotionLayout
 import com.example.mr_motor_.R
 import com.example.mr_motor_.presentation.home.HomeFragment
-import com.example.mr_motor_.presentation.news.NewsFragment
+import com.example.mr_motor_.presentation.posts.NewsFragment
 import com.example.mr_motor_.presentation.tasks.TaskFragment
 
 

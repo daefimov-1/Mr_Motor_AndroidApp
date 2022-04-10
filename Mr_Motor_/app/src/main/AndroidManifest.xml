@@ -29,7 +29,7 @@
         <activity android:name=".presentation.AccountSettingsPage" />
         <activity android:name=".presentation.AccountPage" />
         <activity android:name=".presentation.LoginActivity" />
-        <activity android:name=".presentation.news.detailsPage.NewsDetailsPage" />
+        <activity android:name=".presentation.posts.detailsPage.NewsDetailsPage" />
         <activity android:name=".presentation.MainActivity" />
     </application>
 

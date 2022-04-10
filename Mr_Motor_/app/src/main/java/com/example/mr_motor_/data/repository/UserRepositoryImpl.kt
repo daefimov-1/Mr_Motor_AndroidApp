@@ -12,7 +12,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class UserRepositoryImpl(private val context: Context) : UserRepository {
+class UserRepositoryImpl(context: Context) : UserRepository {
 
     val sessionManager: SessionManager = SessionManager(context)
 

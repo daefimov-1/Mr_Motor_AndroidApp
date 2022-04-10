@@ -20,8 +20,6 @@ class LoginActivity : AppCompatActivity(), ResponseCallback {
     private lateinit var signUp_button : Button
     private lateinit var forgotPassword_button : Button
 
-    private lateinit var sessionManager : SessionManager
-
     private val userRepository by lazy { UserRepositoryImpl(context = this) }
     private val loginUseCase by lazy { LoginUseCase(userRepository = userRepository, this) }
 
@@ -31,8 +29,6 @@ class LoginActivity : AppCompatActivity(), ResponseCallback {
         supportActionBar?.hide()
         setTheme(R.style.splashScreenTheme)
         setContentView(R.layout.log_in_page)
-
-        sessionManager = SessionManager(this)
 
         email = findViewById(R.id.et_signUpPage_email)
         password = findViewById(R.id.et_signUpPage_password)
@@ -61,8 +57,13 @@ class LoginActivity : AppCompatActivity(), ResponseCallback {
 
     }
 
-    override fun response() {
-        finish()
+    override fun response(result : Boolean) {
+        if(result){
+            finish()
+        }
+        else{
+            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+        }
     }
 
     companion object{

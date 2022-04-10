@@ -1,4 +1,4 @@
-package com.example.mr_motor_.presentation.news.detailsPage
+package com.example.mr_motor_.presentation.posts.detailsPage
 
 import android.app.Activity
 import android.content.Intent
@@ -39,7 +39,7 @@ class NewsDetailsPage : AppCompatActivity() {
             text?.text = news?.content
             star?.setImageResource(R.drawable.ic_star_favourite)
             Picasso.with(this).load(news?.thumbnail).into(image)
-//            if(news?.favourite == true){
+//            if(posts?.favourite == true){
 //                star?.setImageResource(R.drawable.ic_star_favourite)
 //            }
 //            else{

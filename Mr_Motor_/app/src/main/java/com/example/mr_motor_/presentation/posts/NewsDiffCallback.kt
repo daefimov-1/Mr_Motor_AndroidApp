@@ -1,4 +1,4 @@
-package com.example.mr_motor_.presentation.news
+package com.example.mr_motor_.presentation.posts
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.mr_motor_.domain.models.Post
