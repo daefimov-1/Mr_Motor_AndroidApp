@@ -28,6 +28,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/tv_posts"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="23dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

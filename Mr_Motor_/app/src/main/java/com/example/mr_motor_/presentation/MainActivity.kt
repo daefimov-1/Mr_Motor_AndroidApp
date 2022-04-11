@@ -12,6 +12,7 @@ import com.example.mr_motor_.R
 import com.example.mr_motor_.presentation.home.HomeFragment
 import com.example.mr_motor_.presentation.posts.CompetitionFragment
 import com.example.mr_motor_.presentation.posts.NewsFragment
+import com.example.mr_motor_.presentation.posts.RacerFragment
 import com.example.mr_motor_.presentation.tasks.TaskFragment
 
 
@@ -75,6 +76,11 @@ class MainActivity : AppCompatActivity() {
                 commit()
             }
 
+        } else if(item == 2){
+            supportFragmentManager.beginTransaction().apply {
+                add(R.id.fl_fragments, RacerFragment())
+                commit()
+            }
         }
     }
 

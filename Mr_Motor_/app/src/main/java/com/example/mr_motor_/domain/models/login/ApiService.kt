@@ -35,4 +35,7 @@ interface ApiService {
 
     @GET(Constants.COMPETITIONS_URL)
     fun get_competitions() : Call<PostResponse>
+
+    @GET(Constants.RACERS_URL)
+    fun get_racers() : Call<PostResponse>
 }

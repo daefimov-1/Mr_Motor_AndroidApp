@@ -26,6 +26,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var viewModel: HomeViewModel
     private var accountButton : ImageButton? = null
+    private var racerButton : ImageButton? = null
     private var competitionButton : ImageButton? = null
 
     override fun onCreateView(
@@ -50,6 +51,11 @@ class HomeFragment : Fragment() {
         competitionButton = view?.findViewById<ImageButton>(R.id.ib_home_frame_6)
         competitionButton?.setOnClickListener {
             (activity as MainActivity?)!!.onNavigationItemSelected2(1)
+        }
+
+        racerButton = view?.findViewById<ImageButton>(R.id.ib_home_frame_5)
+        racerButton?.setOnClickListener {
+            (activity as MainActivity?)!!.onNavigationItemSelected2(2)
         }
 
         val sessionManager : SessionManager = SessionManager(requireContext())
