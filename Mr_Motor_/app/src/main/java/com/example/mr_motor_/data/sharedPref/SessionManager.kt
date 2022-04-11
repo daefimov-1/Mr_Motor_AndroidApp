@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import com.example.mr_motor_.R
 import com.example.mr_motor_.domain.models.Post
 import com.example.mr_motor_.domain.models.UserResponse
+import com.example.mr_motor_.domain.objects.PostType
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -19,6 +20,9 @@ class SessionManager (context: Context) {
         const val USER_TOKEN = "user_token"
         const val USER_DETAILS = "user_details"
         const val NEWS_LIST = "news_list"
+        const val COMPETITION_LIST = "competition_list"
+        const val CAR_LIST = "car_list"
+        const val RACER_LIST = "racer_list"
     }
 
     /**
@@ -70,20 +74,33 @@ class SessionManager (context: Context) {
     /**
      * Function to save posts when they are uploaded on splash screen
      */
-    fun saveNewsArray(list: List<Post>?){
+    fun savePostsArray(list: List<Post>?, type: PostType){
         val editor = prefs.edit()
         val gson = Gson()
         val json = gson.toJson(list)
-        editor.putString(NEWS_LIST, json)
+        when(type){
+            PostType.NEWS -> editor.putString(NEWS_LIST, json)
+            PostType.COMPETITION -> editor.putString(COMPETITION_LIST, json)
+            PostType.CAR -> editor.putString(CAR_LIST, json)
+            PostType.RACER -> editor.putString(RACER_LIST, json)
+        }
+
         editor.apply()
     }
 
     /**
      * Function to fetch posts list
      */
-    fun fetchNewsList(): List<Post> {
+    fun fetchPostsList(type: PostType): List<Post> {
         val gson = Gson()
-        val json: String? = prefs.getString(NEWS_LIST, null)
+        var json: String? = null
+        when(type){
+            PostType.NEWS -> json = prefs.getString(NEWS_LIST, null)
+            PostType.COMPETITION -> json = prefs.getString(COMPETITION_LIST, null)
+            PostType.CAR -> json = prefs.getString(CAR_LIST, null)
+            PostType.RACER -> json = prefs.getString(RACER_LIST, null)
+        }
+
         return gson.fromJson(json, object : TypeToken<List<Post>>() {}.type)
     }
 }

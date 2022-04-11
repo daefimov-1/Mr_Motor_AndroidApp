@@ -39,12 +39,7 @@ class NewsDetailsPage : AppCompatActivity() {
             text?.text = news?.content
             star?.setImageResource(R.drawable.ic_star_favourite)
             Picasso.with(this).load(news?.thumbnail).into(image)
-//            if(posts?.favourite == true){
-//                star?.setImageResource(R.drawable.ic_star_favourite)
-//            }
-//            else{
-//                star?.setImageResource(R.drawable.ic_star)
-//            }
+
             buttonGoToSource?.setOnClickListener {
                 val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(news?.source))
                 startActivity(browserIntent)
@@ -55,7 +50,7 @@ class NewsDetailsPage : AppCompatActivity() {
     }
 
     companion object{
-        private const val OPEN_NEWS : String = "NoteDetailsActivity.OPEN_NEWS"
+        private const val OPEN_NEWS : String = "NewsDetailsActivity.OPEN_NEWS"
         fun start(caller: Activity, news: Post? ){
             val intent : Intent = Intent(caller, NewsDetailsPage::class.java)
             if(news != null){

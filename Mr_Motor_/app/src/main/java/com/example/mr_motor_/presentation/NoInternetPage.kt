@@ -11,6 +11,7 @@ import com.example.mr_motor_.R
 import com.example.mr_motor_.domain.models.login.ApiClient
 import com.example.mr_motor_.data.sharedPref.SessionManager
 import com.example.mr_motor_.domain.models.PostResponse
+import com.example.mr_motor_.domain.objects.PostType
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -49,7 +50,7 @@ class NoInternetPage : AppCompatActivity() {
             }
 
             override fun onResponse(call: Call<PostResponse>, response: Response<PostResponse>) {
-                sessionManager.saveNewsArray(response.body()?.posts)
+                sessionManager.savePostsArray(response.body()?.posts, PostType.NEWS)
                 Log.d("NOINTERNET_APICLIENT", "news taken")
                 MainActivity.start(this@NoInternetPage)
                 finish()

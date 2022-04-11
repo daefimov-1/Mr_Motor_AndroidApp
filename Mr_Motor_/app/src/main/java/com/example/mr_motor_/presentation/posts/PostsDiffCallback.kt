@@ -3,7 +3,7 @@ package com.example.mr_motor_.presentation.posts
 import androidx.recyclerview.widget.DiffUtil
 import com.example.mr_motor_.domain.models.Post
 
-class NewsDiffCallback : DiffUtil.ItemCallback<Post>()  {
+class PostsDiffCallback : DiffUtil.ItemCallback<Post>()  {
     override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
         return oldItem.id == newItem.id
     }

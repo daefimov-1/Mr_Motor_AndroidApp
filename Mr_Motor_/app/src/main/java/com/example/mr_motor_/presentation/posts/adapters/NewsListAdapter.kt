@@ -1,4 +1,4 @@
-package com.example.mr_motor_.presentation.posts
+package com.example.mr_motor_.presentation.posts.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.example.mr_motor_.R
 import com.example.mr_motor_.domain.models.Post
+import com.example.mr_motor_.presentation.posts.PostsDiffCallback
+import com.example.mr_motor_.presentation.posts.viewHolder.NewsViewHolder
 
-class NewsListAdapter(context: Context?) : ListAdapter<Post, NewsViewHolder>(NewsDiffCallback()) {
+class NewsListAdapter(context: Context?) : ListAdapter<Post, NewsViewHolder>(PostsDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
         val view: View = LayoutInflater.from(parent.context)
             .inflate(R.layout.newspage_viewholder, parent, false)

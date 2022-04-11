@@ -32,4 +32,7 @@ interface ApiService {
 
     @GET(Constants.NEWS_URL)
     fun get_news() : Call<PostResponse>
+
+    @GET(Constants.COMPETITIONS_URL)
+    fun get_competitions() : Call<PostResponse>
 }

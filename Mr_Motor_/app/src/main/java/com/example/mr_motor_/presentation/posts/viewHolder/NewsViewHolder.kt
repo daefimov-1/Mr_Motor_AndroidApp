@@ -1,4 +1,4 @@
-package com.example.mr_motor_.presentation.posts
+package com.example.mr_motor_.presentation.posts.viewHolder
 
 import android.app.Activity
 import android.view.View
@@ -23,17 +23,9 @@ class NewsViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
         linq.text = getSource(news?.source.toString())
         Picasso.with(itemView.context).load(news?.thumbnail).into(background)
 
-//        if(posts?.favourite == true){
-//            star.setImageResource(R.drawable.ic_star_favourite)
-//        }
-//        else{
-//            star.setImageResource(R.drawable.ic_star)
-//        }
     }
 
     private fun getSource(str : String) : String {
-
-
         return str.split("/")[2]
     }
     init {
