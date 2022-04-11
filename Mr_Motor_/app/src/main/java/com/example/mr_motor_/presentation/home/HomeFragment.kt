@@ -26,6 +26,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var viewModel: HomeViewModel
     private var accountButton : ImageButton? = null
+    private var carButton : ImageButton? = null
     private var racerButton : ImageButton? = null
     private var competitionButton : ImageButton? = null
 
@@ -56,6 +57,11 @@ class HomeFragment : Fragment() {
         racerButton = view?.findViewById<ImageButton>(R.id.ib_home_frame_5)
         racerButton?.setOnClickListener {
             (activity as MainActivity?)!!.onNavigationItemSelected2(2)
+        }
+
+        carButton = view?.findViewById<ImageButton>(R.id.ib_home_frame_4)
+        carButton?.setOnClickListener {
+            (activity as MainActivity?)!!.onNavigationItemSelected2(3)
         }
 
         val sessionManager : SessionManager = SessionManager(requireContext())

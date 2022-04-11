@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import com.example.mr_motor_.R
 import com.example.mr_motor_.presentation.home.HomeFragment
+import com.example.mr_motor_.presentation.posts.CarFragment
 import com.example.mr_motor_.presentation.posts.CompetitionFragment
 import com.example.mr_motor_.presentation.posts.NewsFragment
 import com.example.mr_motor_.presentation.posts.RacerFragment
@@ -70,16 +71,24 @@ class MainActivity : AppCompatActivity() {
 
     fun onNavigationItemSelected2(item : Int) {
 
-        if (item == 1) {
-            supportFragmentManager.beginTransaction().apply {
-                add(R.id.fl_fragments, CompetitionFragment())
-                commit()
+        when (item) {
+            1 -> {
+                supportFragmentManager.beginTransaction().apply {
+                    add(R.id.fl_fragments, CompetitionFragment())
+                    commit()
+                }
             }
-
-        } else if(item == 2){
-            supportFragmentManager.beginTransaction().apply {
-                add(R.id.fl_fragments, RacerFragment())
-                commit()
+            2 -> {
+                supportFragmentManager.beginTransaction().apply {
+                    add(R.id.fl_fragments, RacerFragment())
+                    commit()
+                }
+            }
+            3 -> {
+                supportFragmentManager.beginTransaction().apply {
+                    add(R.id.fl_fragments, CarFragment())
+                    commit()
+                }
             }
         }
     }

@@ -4,17 +4,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="184dp"
-    android:background="@drawable/rounded_corners">
+    android:background="@drawable/rounded_corners"
+    android:layout_marginBottom="14dp">
 
-    <ImageView
-        android:id="@+id/iv_car_background"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/car_news_viewholder"
-        android:background="@drawable/rounded_corners"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_photo"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:scaleType="centerCrop"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="16dp"
+        app:cardCornerRadius="18dp"
+        android:layout_centerHorizontal="true"
+        android:innerRadius="0dp"
+        android:thicknessRatio="1.9"
+        android:translationZ="-10dp">
+        <ImageView
+            android:id="@+id/iv_car_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/car_news_viewholder"
+            android:background="@drawable/rounded_corners"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:scaleType="centerCrop"/>
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/tv_vehicle_firstName"
@@ -45,15 +59,15 @@
         android:id="@+id/v_container_for_star"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        app:layout_constraintTop_toTopOf="@id/iv_car_background"
-        app:layout_constraintRight_toRightOf="@id/iv_car_background"
+        app:layout_constraintTop_toTopOf="@id/cv_photo"
+        app:layout_constraintRight_toRightOf="@id/cv_photo"
         android:background="@drawable/rounded_corners"
         android:backgroundTint="@color/secondary_black"
         android:layout_marginTop="8dp"
         android:layout_marginRight="9dp"
         />
 
-    <ImageView android:id="@+id/iv_newsViewHolder_star"
+    <ImageView android:id="@+id/iv_vehicleViewHolder_star"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_star"
