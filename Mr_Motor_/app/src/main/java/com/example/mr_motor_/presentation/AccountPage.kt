@@ -12,7 +12,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import com.example.mr_motor_.R
-import com.example.mr_motor_.data.sharedPref.SessionManager
+import com.example.mr_motor_.data.storage.SessionManager
 import com.example.mr_motor_.domain.models.UserResponse
 import com.google.android.material.transition.platform.MaterialSharedAxis
 

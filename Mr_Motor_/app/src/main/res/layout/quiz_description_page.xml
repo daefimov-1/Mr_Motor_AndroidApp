@@ -27,6 +27,7 @@
         android:layout_marginLeft="13dp"
         android:layout_marginRight="13dp"/>
     <TextView
+        android:id="@+id/tv_quizDescription_title"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         tools:text="What car is yours?"
@@ -41,7 +42,7 @@
         android:layout_width="wrap_content"
         app:layout_constraintRight_toRightOf="@id/v_frame_in_description"
         app:layout_constraintBottom_toBottomOf="@id/v_frame_in_description"
-        tools:src="@drawable/sport_car"
+        android:src="@drawable/sport_car"
         android:layout_marginRight="17dp"
         android:layout_marginBottom="5dp"
         />
@@ -60,6 +61,7 @@
         android:layout_marginTop="18dp"/>
 
     <TextView
+        android:id="@+id/tv_quizDescription_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/tv_description"

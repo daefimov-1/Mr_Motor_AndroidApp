@@ -8,7 +8,6 @@ import android.widget.EditText
 import androidx.fragment.app.FragmentActivity
 import com.example.mr_motor_.R
 import com.example.mr_motor_.data.repository.UserRepositoryImpl
-import com.example.mr_motor_.data.sharedPref.SessionManager
 import com.example.mr_motor_.domain.models.ResponseCallback
 import com.example.mr_motor_.domain.usecase.LoginUseCase
 

@@ -1,16 +1,9 @@
 package com.example.mr_motor_.data.repository
 
 import android.content.Context
-import android.util.Log
-import com.example.mr_motor_.domain.models.LoginRequest
-import com.example.mr_motor_.domain.models.LoginResponse
 import com.example.mr_motor_.domain.models.UserResponse
-import com.example.mr_motor_.domain.models.login.ApiClient
-import com.example.mr_motor_.data.sharedPref.SessionManager
+import com.example.mr_motor_.data.storage.SessionManager
 import com.example.mr_motor_.domain.repository.UserRepository
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class UserRepositoryImpl(context: Context) : UserRepository {
 

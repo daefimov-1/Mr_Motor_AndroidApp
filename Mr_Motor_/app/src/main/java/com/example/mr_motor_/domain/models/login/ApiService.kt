@@ -1,6 +1,7 @@
 package com.example.mr_motor_.domain.models.login
 
 import com.example.mr_motor_.domain.models.*
+import com.example.mr_motor_.domain.models.quiz.QuizVO
 import com.example.mr_motor_.domain.objects.Constants
 import retrofit2.Call
 import retrofit2.http.*
@@ -41,4 +42,13 @@ interface ApiService {
 
     @GET(Constants.CARS_URL)
     fun get_cars() : Call<PostResponse>
+
+    @GET(Constants.QUIZ_URL)
+    fun get_short_quizes() : Call<ShortQuizesResponse>
+
+    @GET("quiz/{quiz_id}")
+    fun get_quiz(
+        @Path("quiz_id") quiz_id: Long,
+        @Header("Authorization") authHeader: String?
+    ) : Call<QuizVO>
 }

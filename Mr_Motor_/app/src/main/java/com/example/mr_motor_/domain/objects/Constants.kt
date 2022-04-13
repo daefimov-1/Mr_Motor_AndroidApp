@@ -13,4 +13,5 @@ object Constants {
     const val RACERS_URL = "posts/get_by_type?type=RACER"
     const val COMPETITIONS_URL = "posts/get_by_type?type=COMPETITION"
     const val CARS_URL = "posts/get_by_type?type=CAR"
+    const val QUIZ_URL = "quiz"
 }

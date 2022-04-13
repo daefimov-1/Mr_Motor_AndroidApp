@@ -7,8 +7,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.example.mr_motor_.R
 import com.example.mr_motor_.domain.models.Quiz
+import com.example.mr_motor_.domain.models.quiz.ShortQuizVO
 
-class QuizListAdapter(context: Context?) : ListAdapter<Quiz, QuizViewHolder>(QuizDiffCallback()) {
+class QuizListAdapter(context: Context?) : ListAdapter<ShortQuizVO, QuizViewHolder>(QuizDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuizViewHolder {
         val view: View = LayoutInflater.from(parent.context)
             .inflate(R.layout.quizespage_viewholder, parent, false)

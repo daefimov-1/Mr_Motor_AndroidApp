@@ -2,21 +2,12 @@ package com.example.mr_motor_.presentation
 
 import android.media.MediaPlayer
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mr_motor_.R
 import com.example.mr_motor_.data.repository.NewsRepositoryImpl
-import com.example.mr_motor_.data.repository.UserRepositoryImpl
-import com.example.mr_motor_.domain.models.login.ApiClient
-import com.example.mr_motor_.data.sharedPref.SessionManager
-import com.example.mr_motor_.domain.models.PostResponse
 import com.example.mr_motor_.domain.models.ResponseCallback
 import com.example.mr_motor_.domain.usecase.LoadNewsUseCase
-import com.example.mr_motor_.domain.usecase.LoginUseCase
 import pl.droidsonroids.gif.GifImageView
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
 class SplashScreen : AppCompatActivity(), ResponseCallback {

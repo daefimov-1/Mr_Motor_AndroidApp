@@ -13,7 +13,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/splashScreenTheme">
-
         <activity
             android:name=".presentation.SplashScreen"
             android:exported="true">
@@ -23,6 +22,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".presentation.tasks.fullQuiz.QuizResultPage"/>
+        <activity android:name=".presentation.tasks.fullQuiz.QuizQPage"/>
+        <activity android:name=".presentation.tasks.fullQuiz.QuizDescriptionPage"/>
         <activity android:name=".presentation.NoInternetPage" />
         <activity android:name=".presentation.ForgotPasswordPage" />
         <activity android:name=".presentation.SignUpPage" />

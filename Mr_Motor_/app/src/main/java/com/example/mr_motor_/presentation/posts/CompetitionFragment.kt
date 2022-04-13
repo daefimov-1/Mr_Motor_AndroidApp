@@ -10,11 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mr_motor_.R
-import com.example.mr_motor_.data.sharedPref.SessionManager
-import com.example.mr_motor_.domain.models.Post
 import com.example.mr_motor_.domain.models.PostResponse
 import com.example.mr_motor_.domain.models.login.ApiClient
-import com.example.mr_motor_.domain.objects.PostType
 import com.example.mr_motor_.presentation.posts.adapters.CompetitionListAdapter
 import retrofit2.Call
 import retrofit2.Callback

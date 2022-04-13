@@ -1,4 +1,4 @@
-package com.example.mr_motor_.data.sharedPref
+package com.example.mr_motor_.data.storage
 
 import android.content.Context
 import android.content.SharedPreferences

@@ -11,7 +11,7 @@ import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.mr_motor_.R
-import com.example.mr_motor_.data.sharedPref.SessionManager
+import com.example.mr_motor_.data.storage.SessionManager
 import com.example.mr_motor_.domain.models.UserResponse
 import com.example.mr_motor_.presentation.AccountPage
 import com.example.mr_motor_.presentation.LoginActivity

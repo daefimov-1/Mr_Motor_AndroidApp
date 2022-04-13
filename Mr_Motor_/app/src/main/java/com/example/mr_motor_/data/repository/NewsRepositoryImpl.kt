@@ -1,7 +1,7 @@
 package com.example.mr_motor_.data.repository
 
 import android.content.Context
-import com.example.mr_motor_.data.sharedPref.SessionManager
+import com.example.mr_motor_.data.storage.SessionManager
 import com.example.mr_motor_.domain.models.Post
 import com.example.mr_motor_.domain.objects.PostType
 import com.example.mr_motor_.domain.repository.NewsRepository

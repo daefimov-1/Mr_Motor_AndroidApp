@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mr_motor_.R
-import com.example.mr_motor_.data.sharedPref.SessionManager
+import com.example.mr_motor_.data.storage.SessionManager
 import com.example.mr_motor_.domain.objects.PostType
 import com.example.mr_motor_.presentation.posts.adapters.NewsListAdapter
 

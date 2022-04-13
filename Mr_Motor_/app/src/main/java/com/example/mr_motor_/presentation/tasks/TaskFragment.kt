@@ -1,15 +1,25 @@
 package com.example.mr_motor_.presentation.tasks
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mr_motor_.R
+import com.example.mr_motor_.domain.models.PostResponse
 import com.example.mr_motor_.domain.models.Quiz
+import com.example.mr_motor_.domain.models.ShortQuizesResponse
+import com.example.mr_motor_.domain.models.login.ApiClient
+import com.example.mr_motor_.domain.objects.PostType
+import com.example.mr_motor_.presentation.MainActivity
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class TaskFragment : Fragment() {
@@ -30,11 +40,16 @@ class TaskFragment : Fragment() {
         recyclerView = view.findViewById(R.id.rv_quizPage)
         recyclerView?.layoutManager = LinearLayoutManager(context)
         val adapter = QuizListAdapter(context)
-        val list : List<Quiz> = listOf(
-            Quiz(1, "What car is yours?", R.drawable.sport_car),
-            Quiz(2, "How many cars you need?", R.drawable.ic_racer)
-        )
-        adapter.submitList(list)
+        ApiClient.getApiService().get_short_quizes().enqueue(object : Callback<ShortQuizesResponse> {
+            override fun onFailure(call: Call<ShortQuizesResponse>, t: Throwable) {
+                t.printStackTrace()
+                Log.e("QUIZ_APICLIENT", "doesn't work")
+            }
+
+            override fun onResponse(call: Call<ShortQuizesResponse>, response: Response<ShortQuizesResponse>) {
+                adapter.submitList(response.body()?.quizzes)
+            }
+        })
         recyclerView?.adapter = adapter
 
         return view

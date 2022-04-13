@@ -11,10 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.mr_motor_.R
-import com.example.mr_motor_.data.sharedPref.SessionManager
+import com.example.mr_motor_.data.storage.SessionManager
 import com.example.mr_motor_.domain.models.PostResponse
 import com.example.mr_motor_.domain.models.login.ApiClient
-import com.example.mr_motor_.presentation.posts.adapters.CompetitionListAdapter
 import com.example.mr_motor_.presentation.posts.adapters.RacerListAdapter
 import retrofit2.Call
 import retrofit2.Callback
