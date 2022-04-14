@@ -1,7 +1,6 @@
 package com.example.mr_motor_.presentation.tasks
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.mr_motor_.domain.models.Quiz
 import com.example.mr_motor_.domain.models.quiz.ShortQuizVO
 
 class QuizDiffCallback : DiffUtil.ItemCallback<ShortQuizVO>()  {

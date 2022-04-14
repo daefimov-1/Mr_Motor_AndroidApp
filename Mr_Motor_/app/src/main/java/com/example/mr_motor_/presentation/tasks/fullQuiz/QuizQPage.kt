@@ -6,8 +6,10 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -18,13 +20,14 @@ import com.example.mr_motor_.domain.models.ResponseCallback
 import com.example.mr_motor_.domain.models.login.ApiClient
 import com.example.mr_motor_.domain.models.quiz.QuizItemVO
 import com.example.mr_motor_.domain.models.quiz.QuizVO
+import com.example.mr_motor_.domain.models.quiz.ResultQuiz
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class QuizQPage : AppCompatActivity() {
 
-    private var id_quiz : Long? = null
+    private var id_quiz : Long = 0
     private var number_of_question : Int = 0
     private lateinit var full_quiz : QuizVO
     private lateinit var list_questions : List<QuizItemVO>
@@ -42,6 +45,9 @@ class QuizQPage : AppCompatActivity() {
     private lateinit var cardWithImage : CardView
     private lateinit var image : ImageView
 
+    private lateinit var vLoading : View
+    private lateinit var pbLoading : ProgressBar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -58,6 +64,8 @@ class QuizQPage : AppCompatActivity() {
         fourthAnswerButton = findViewById(R.id.btn_fourth_answer)
         image = findViewById(R.id.iv_quiz_background)
         cardWithImage = findViewById(R.id.cv_photo)
+        vLoading = findViewById(R.id.v_loading)
+        pbLoading = findViewById(R.id.pb_loading)
 
         buttons_enabled(false)
 
@@ -139,7 +147,7 @@ class QuizQPage : AppCompatActivity() {
     fun start_quiz(){
         id_quiz = intent.getLongExtra(QuizQPage.QUIZ_ID, 1)
 
-        ApiClient.getApiService().get_quiz(id_quiz!!, sessionManager.fetchAuthToken()).enqueue(object :
+        ApiClient.getApiService().get_quiz(id_quiz, sessionManager.fetchAuthToken()).enqueue(object :
             Callback<QuizVO> {
             override fun onFailure(call: Call<QuizVO>, t: Throwable) {
                 t.printStackTrace()
@@ -168,6 +176,9 @@ class QuizQPage : AppCompatActivity() {
         secondAnswerButton.text = question.quizAnswers[1].answer
         thirdAnswerButton.text = question.quizAnswers[2].answer
         fourthAnswerButton.text = question.quizAnswers[3].answer
+
+        vLoading.isVisible = false
+        pbLoading.isVisible = false
     }
 
     fun next_question(){
@@ -176,7 +187,9 @@ class QuizQPage : AppCompatActivity() {
 
         if(number_of_question >= list_questions.size){
             buttons_enabled(false)
-            //end of quiz
+
+            QuizResultPage.start(this, ResultQuiz(right_answers = right_answers, number_of_questions = list_questions.size, quiz_name = full_quiz.title, quiz_id = id_quiz))
+            finish()
         }
         else{
             buttons_grey()
@@ -192,7 +205,7 @@ class QuizQPage : AppCompatActivity() {
     }
 
     fun set_image(){
-        var encoded : String = question.image.substring(question.image.indexOf(',')+1)
+        val encoded : String = question.image.substring(question.image.indexOf(',')+1)
 
         val decodedString: ByteArray = Base64.decode(encoded, Base64.DEFAULT)
         val bitmap =

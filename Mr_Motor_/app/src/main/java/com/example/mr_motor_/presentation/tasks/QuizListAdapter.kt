@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.example.mr_motor_.R
-import com.example.mr_motor_.domain.models.Quiz
 import com.example.mr_motor_.domain.models.quiz.ShortQuizVO
 
 class QuizListAdapter(context: Context?) : ListAdapter<ShortQuizVO, QuizViewHolder>(QuizDiffCallback()) {
