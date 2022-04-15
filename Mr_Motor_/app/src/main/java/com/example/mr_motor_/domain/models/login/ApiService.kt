@@ -42,11 +42,26 @@ interface ApiService {
     @GET(Constants.COMPETITIONS_URL)
     fun get_competitions() : Call<PostResponse>
 
+    @GET(Constants.COMPETITIONS_URL)
+    fun getCompetitionsWithToken(
+        @Header("Authorization") authHeader: String?
+    ) : Call<PostResponse>
+
     @GET(Constants.RACERS_URL)
     fun get_racers() : Call<PostResponse>
 
+    @GET(Constants.RACERS_URL)
+    fun getRacersWithToken(
+        @Header("Authorization") authHeader: String?
+    ) : Call<PostResponse>
+
     @GET(Constants.CARS_URL)
     fun get_cars() : Call<PostResponse>
+
+    @GET(Constants.CARS_URL)
+    fun getCarsWithToken(
+        @Header("Authorization") authHeader: String?
+    ) : Call<PostResponse>
 
     @GET(Constants.QUIZ_URL)
     fun get_short_quizes() : Call<ShortQuizesResponse>

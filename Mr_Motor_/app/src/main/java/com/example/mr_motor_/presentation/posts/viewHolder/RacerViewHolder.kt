@@ -15,15 +15,21 @@ class RacerViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
     private val secondName : TextView = itemView.findViewById(R.id.tv_racer_secondName)
     private val star : ImageView = itemView.findViewById(R.id.iv_racerViewHolder_star)
     private val background : ImageView = itemView.findViewById(R.id.iv_racer_background)
-    private var racer : Post? = null
-    fun bind(racer: Post?){
+    private lateinit var racer : Post
+    fun bind(racer: Post){
         this.racer = racer
-        val arrOfName = racer?.title?.split(' ')
-        firstName.text = arrOfName?.get(0) ?: "NULL"
-        secondName.text = arrOfName?.get(1) ?: "NULL"
+        val arrOfName = racer.title.split(' ')
+        firstName.text = arrOfName.get(0) ?: "NULL"
+        secondName.text = arrOfName.get(1) ?: "NULL"
         star.setImageResource(R.drawable.ic_star_favourite)
-        Picasso.with(itemView.context).load(racer?.thumbnail).into(background)
+        Picasso.with(itemView.context).load(racer.thumbnail).into(background)
 
+        if(racer.like){
+            star.setImageResource(R.drawable.ic_star_favourite)
+        }
+        else{
+            star.setImageResource(R.drawable.ic_star)
+        }
     }
 
     init {

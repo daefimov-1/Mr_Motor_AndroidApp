@@ -26,9 +26,9 @@ class HomeFragment : Fragment() {
 
     private lateinit var viewModel: HomeViewModel
     private var accountButton : ImageButton? = null
-    private var carButton : ImageButton? = null
-    private var racerButton : ImageButton? = null
-    private var competitionButton : ImageButton? = null
+    private var carButton : View? = null
+    private var racerButton : View? = null
+    private var competitionButton : View? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,17 +49,17 @@ class HomeFragment : Fragment() {
 
         }
 
-        competitionButton = view?.findViewById<ImageButton>(R.id.ib_home_frame_6)
+        competitionButton = view?.findViewById<View>(R.id.v_competitions)
         competitionButton?.setOnClickListener {
             (activity as MainActivity?)!!.onNavigationItemSelected2(1)
         }
 
-        racerButton = view?.findViewById<ImageButton>(R.id.ib_home_frame_5)
+        racerButton = view?.findViewById<View>(R.id.v_racers)
         racerButton?.setOnClickListener {
             (activity as MainActivity?)!!.onNavigationItemSelected2(2)
         }
 
-        carButton = view?.findViewById<ImageButton>(R.id.ib_home_frame_4)
+        carButton = view?.findViewById<View>(R.id.v_cars)
         carButton?.setOnClickListener {
             (activity as MainActivity?)!!.onNavigationItemSelected2(3)
         }

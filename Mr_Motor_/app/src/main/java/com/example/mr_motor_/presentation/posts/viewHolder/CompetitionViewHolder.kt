@@ -14,13 +14,18 @@ class CompetitionViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView)
     private val title : TextView = itemView.findViewById(R.id.tv_competition_title)
     private val star : ImageView = itemView.findViewById(R.id.iv_competitionViewHolder_star)
     private val background : ImageView = itemView.findViewById(R.id.iv_competition_background)
-    private var competition : Post? = null
-    fun bind(competition: Post?){
+    private lateinit var competition : Post
+    fun bind(competition: Post){
         this.competition = competition
-        title.text = competition?.title ?: "noting (fun bind NewsViewHolder)"
-        star.setImageResource(R.drawable.ic_star_favourite)
-        Picasso.with(itemView.context).load(competition?.thumbnail).into(background)
+        title.text = competition.title ?: "noting (fun bind NewsViewHolder)"
+        Picasso.with(itemView.context).load(competition.thumbnail).into(background)
 
+        if(competition.like){
+            star.setImageResource(R.drawable.ic_star_favourite)
+        }
+        else{
+            star.setImageResource(R.drawable.ic_star)
+        }
     }
     init {
         itemView.setOnClickListener {

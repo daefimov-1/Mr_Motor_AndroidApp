@@ -70,7 +70,7 @@
     <ImageView android:id="@+id/iv_vehicleViewHolder_star"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_star"
+        tools:src="@drawable/ic_star"
         app:layout_constraintTop_toTopOf="@id/v_container_for_star"
         app:layout_constraintBottom_toBottomOf="@id/v_container_for_star"
         app:layout_constraintLeft_toLeftOf="@id/v_container_for_star"
