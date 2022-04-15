@@ -12,5 +12,6 @@ data class Post(
     var content: String = "",
     var type: PostType = PostType.NEWS,
     var thumbnail: String = "",
+    var like: Boolean = false
 ) : Parcelable {
 }

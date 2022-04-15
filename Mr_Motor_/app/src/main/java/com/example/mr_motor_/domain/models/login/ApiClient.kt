@@ -5,6 +5,7 @@ import com.example.mr_motor_.domain.objects.Constants
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 
 /**
@@ -20,6 +21,7 @@ class ApiClient {
             if (!::apiService.isInitialized) {
                 val retrofit = Retrofit.Builder()
                     .baseUrl(Constants.BASE_URL)
+                    .addConverterFactory(ScalarsConverterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
 

@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -14,6 +15,7 @@ import androidx.fragment.app.FragmentActivity
 import com.example.mr_motor_.R
 import com.example.mr_motor_.data.storage.SessionManager
 import com.example.mr_motor_.domain.models.UserResponse
+import com.example.mr_motor_.presentation.posts.FavouritePostsPage
 import com.google.android.material.transition.platform.MaterialSharedAxis
 
 
@@ -21,6 +23,7 @@ class AccountPage : AppCompatActivity() {
 
     private lateinit var buttonEdit : ImageButton
     private lateinit var avatar : ImageView
+    private lateinit var favouriteButton : View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +52,11 @@ class AccountPage : AppCompatActivity() {
         }
 
         avatar = findViewById(R.id.iv_account_photo)
+        favouriteButton = findViewById(R.id.v_frame_1)
+        favouriteButton.setOnClickListener {
+            FavouritePostsPage.start(this)
+        }
+
 
         val sessionManager : SessionManager = SessionManager(this)
         val user : UserResponse? = sessionManager.fetchUser()

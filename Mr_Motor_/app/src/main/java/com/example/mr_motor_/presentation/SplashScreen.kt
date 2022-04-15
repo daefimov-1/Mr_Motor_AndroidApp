@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mr_motor_.R
 import com.example.mr_motor_.data.repository.NewsRepositoryImpl
+import com.example.mr_motor_.data.repository.UserRepositoryImpl
 import com.example.mr_motor_.domain.models.ResponseCallback
 import com.example.mr_motor_.domain.usecase.LoadNewsUseCase
 import pl.droidsonroids.gif.GifImageView
@@ -14,8 +15,15 @@ class SplashScreen : AppCompatActivity(), ResponseCallback {
 
     private lateinit var mediaPlayer: MediaPlayer
 
+    private val userRepository by lazy { UserRepositoryImpl(context = this) }
     private val newsRepository by lazy { NewsRepositoryImpl(context = this) }
-    private val loadNewsUseCase by lazy { LoadNewsUseCase(newsRepository = newsRepository, this) }
+    private val loadNewsUseCase by lazy {
+        LoadNewsUseCase(
+            newsRepository = newsRepository,
+            userRepository = userRepository,
+            this
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +38,7 @@ class SplashScreen : AppCompatActivity(), ResponseCallback {
         loadNewsUseCase.execute()
     }
 
-    private fun playAudio(){
+    private fun playAudio() {
         mediaPlayer = MediaPlayer.create(this, R.raw.audio_cars)
         mediaPlayer.start()
     }
@@ -41,11 +49,10 @@ class SplashScreen : AppCompatActivity(), ResponseCallback {
     }
 
     override fun response(result: Boolean) {
-        if(result){
+        if (result) {
             MainActivity.start(this@SplashScreen)
             finish()
-        }
-        else{
+        } else {
             NoInternetPage.start(this@SplashScreen)
             finish()
         }

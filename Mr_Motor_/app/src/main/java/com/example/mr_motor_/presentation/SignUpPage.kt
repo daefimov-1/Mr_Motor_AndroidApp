@@ -49,13 +49,13 @@ class SignUpPage : AppCompatActivity(), ResponseCallback {
 
     companion object {
         fun start(caller: Activity) {
-            var intent = Intent(caller, SignUpPage::class.java)
+            val intent = Intent(caller, SignUpPage::class.java)
             caller.startActivity(intent)
         }
     }
 
     override fun response(result : Boolean) {
-        var toast : Toast
+        val toast : Toast
         if(result){
             toast = Toast.makeText(this@SignUpPage, "Successfully signed up!", Toast.LENGTH_LONG)
             toast.show()

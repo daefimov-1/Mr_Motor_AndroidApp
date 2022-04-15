@@ -15,13 +15,20 @@ class NewsViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
     private val linq : TextView = itemView.findViewById(R.id.tv_newsViewHolder_linq)
     private val star : ImageView = itemView.findViewById(R.id.iv_newsViewHolder_star)
     private val background : ImageView = itemView.findViewById(R.id.iv_news_background)
-    private var news : Post? = null
-    fun bind(news: Post?){
+    private lateinit var news : Post
+    fun bind(news: Post){
         this.news = news
-        title.text = news?.title ?: "noting (fun bind NewsViewHolder)"
+        title.text = news.title
         star.setImageResource(R.drawable.ic_star_favourite)
-        linq.text = getSource(news?.source.toString())
-        Picasso.with(itemView.context).load(news?.thumbnail).into(background)
+        linq.text = getSource(news.source.toString())
+        Picasso.with(itemView.context).load(news.thumbnail).into(background)
+
+        if(news.like){
+            star.setImageResource(R.drawable.ic_star_favourite)
+        }
+        else{
+            star.setImageResource(R.drawable.ic_star)
+        }
 
     }
 

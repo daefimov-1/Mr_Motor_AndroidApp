@@ -34,6 +34,11 @@ interface ApiService {
     @GET(Constants.NEWS_URL)
     fun get_news() : Call<PostResponse>
 
+    @GET(Constants.NEWS_URL)
+    fun getNewsWithToken(
+        @Header("Authorization") authHeader: String?
+    ) : Call<PostResponse>
+
     @GET(Constants.COMPETITIONS_URL)
     fun get_competitions() : Call<PostResponse>
 
@@ -51,4 +56,15 @@ interface ApiService {
         @Path("quiz_id") quiz_id: Long,
         @Header("Authorization") authHeader: String?
     ) : Call<QuizVO>
+
+    @POST("posts/like")
+    fun like(
+        @Query("id") id: Long,
+        @Header("Authorization") authHeader: String?
+    ) : Call<String>
+
+    @GET("posts/liked")
+    fun getLikedPosts(
+        @Header("Authorization") authHeader: String?
+    ) : Call<PostResponse>
 }
