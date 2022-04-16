@@ -16,6 +16,8 @@ import com.example.mr_motor_.R
 import com.example.mr_motor_.data.storage.SessionManager
 import com.example.mr_motor_.domain.models.UserResponse
 import com.example.mr_motor_.presentation.posts.FavouritePostsPage
+import com.example.mr_motor_.presentation.tasks.myQuizes.MyQuizesPage
+import com.example.mr_motor_.presentation.tasks.myQuizes.MyQuizesResultsPage
 import com.google.android.material.transition.platform.MaterialSharedAxis
 
 
@@ -24,6 +26,9 @@ class AccountPage : AppCompatActivity() {
     private lateinit var buttonEdit : ImageButton
     private lateinit var avatar : ImageView
     private lateinit var favouriteButton : View
+    private lateinit var myQuizzesButton : View
+    private lateinit var quizzesResultsButton : View
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +60,16 @@ class AccountPage : AppCompatActivity() {
         favouriteButton = findViewById(R.id.v_frame_1)
         favouriteButton.setOnClickListener {
             FavouritePostsPage.start(this)
+        }
+
+        myQuizzesButton = findViewById(R.id.v_frame_2)
+        myQuizzesButton.setOnClickListener {
+            MyQuizesPage.start(this)
+        }
+
+        quizzesResultsButton = findViewById(R.id.v_frame_3)
+        quizzesResultsButton.setOnClickListener {
+            MyQuizesResultsPage.start(this)
         }
 
 

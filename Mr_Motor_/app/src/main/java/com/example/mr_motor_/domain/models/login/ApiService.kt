@@ -82,4 +82,22 @@ interface ApiService {
     fun getLikedPosts(
         @Header("Authorization") authHeader: String?
     ) : Call<PostResponse>
+
+    @GET("quiz/results")
+    fun getQuizesResults(
+        @Header("Authorization") authHeader: String?
+    ) : Call<QuizResultResponse>
+
+    @GET("quiz/my")
+    fun getMyQuizzes(
+        @Header("Authorization") authHeader: String?
+    ): Call<ShortQuizesResponse>
+
+    @POST("quiz/result")
+    fun postResultOfQuiz(
+        @Query("achieved") achieved : Int,
+        @Query("id") id : Long,
+        @Header("Authorization") authHeader: String?
+    ) : Call<String>
+
 }

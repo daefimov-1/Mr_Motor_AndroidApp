@@ -17,7 +17,6 @@
     <string name="still_no_account">Still no account?</string>
     <string name="reset_password">RESET PASSWORD</string>
     <string name="favourite_news_and_posts">Favourite news and posts</string>
-    <string name="my_quizzes">My Quizzes</string>
     <string name="logout">LOGOUT</string>
     <string name="change_password">Change password</string>
     <string name="new_password">New password</string>
@@ -31,6 +30,8 @@
     <string name="favourite_posts">Favourite Posts</string>
     <string name="the_greatest_competitions">The Greatest Competitions</string>
     <string name="people_who_changed_the_industry">People who changed the industry</string>
+    <string name="my_quiz_results">My Quiz Results</string>
+    <string name="my_quizzes">My Quizzes</string>
 
 
 </resources>

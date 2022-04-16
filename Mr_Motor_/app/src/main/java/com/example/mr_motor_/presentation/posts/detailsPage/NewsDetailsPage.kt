@@ -71,9 +71,14 @@ class NewsDetailsPage : AppCompatActivity() {
                     override fun onResponse(call: Call<String>, response: Response<String>) {
                         val result = response.body().toString()
 
-                        star?.setImageResource(R.drawable.ic_star_favourite)
-
                         val toast = Toast.makeText(this@NewsDetailsPage, result, Toast.LENGTH_LONG)
+
+                        if(result == "Successfully Liked!"){
+                            star?.setImageResource(R.drawable.ic_star_favourite)
+                        }
+                        else{
+                            star?.setImageResource(R.drawable.ic_star)
+                        }
                         toast.show()
                     }
                 })

@@ -193,9 +193,10 @@ class QuizQPage : AppCompatActivity() {
         }
         else{
             buttons_grey()
-            set_image()
+
             number_of_question_textView.text = (number_of_question + 1).toString() + " out of " + list_questions.size.toString()
             question = list_questions[number_of_question]
+            set_image()
             question_textView.text = question.question
             firstAnswerButton.text = question.quizAnswers[0].answer
             secondAnswerButton.text = question.quizAnswers[1].answer
@@ -205,13 +206,19 @@ class QuizQPage : AppCompatActivity() {
     }
 
     fun set_image(){
-        val encoded : String = question.image.substring(question.image.indexOf(',')+1)
+        if(question.image != ""){
+            val encoded : String = question.image.substring(question.image.indexOf(',')+1)
 
-        val decodedString: ByteArray = Base64.decode(encoded, Base64.DEFAULT)
-        val bitmap =
-            BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
-        cardWithImage.isVisible = true
-        image.setImageBitmap(bitmap)
+            val decodedString: ByteArray = Base64.decode(encoded, Base64.DEFAULT)
+            val bitmap =
+                BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+            cardWithImage.isVisible = true
+            image.setImageBitmap(bitmap)
+        }
+        else{
+            cardWithImage.isVisible = false
+        }
+
     }
 
     fun find_correct_answer() : Int {

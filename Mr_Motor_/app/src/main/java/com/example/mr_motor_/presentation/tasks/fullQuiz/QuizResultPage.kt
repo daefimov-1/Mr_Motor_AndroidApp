@@ -6,12 +6,19 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import com.example.mr_motor_.R
+import com.example.mr_motor_.data.storage.SessionManager
+import com.example.mr_motor_.domain.models.PostResponse
+import com.example.mr_motor_.domain.models.login.ApiClient
 import com.example.mr_motor_.domain.models.quiz.ResultQuiz
 import com.example.mr_motor_.domain.models.quiz.ShortQuizVO
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import kotlin.math.roundToInt
 
 class QuizResultPage : AppCompatActivity() {
@@ -23,6 +30,7 @@ class QuizResultPage : AppCompatActivity() {
     private lateinit var name_of_quiz : TextView
     private lateinit var amount : TextView
     private lateinit var try_again_btn : Button
+    private lateinit var sessionManager: SessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +44,8 @@ class QuizResultPage : AppCompatActivity() {
         name_of_quiz = findViewById(R.id.tv_quizResult_title)
         try_again_btn = findViewById(R.id.btn_try_again)
 
+        sessionManager = SessionManager(this)
+
         if (intent.hasExtra(QuizResultPage.RESULT)){
             result = intent.getParcelableExtra(QuizResultPage.RESULT)!!
 
@@ -47,6 +57,18 @@ class QuizResultPage : AppCompatActivity() {
             (mConstraintLayout.layoutParams as ConstraintLayout.LayoutParams)
                 .matchConstraintPercentWidth = percentage.toFloat() /100
             mConstraintLayout.requestLayout()
+
+            ApiClient.getApiService().postResultOfQuiz(result.right_answers, result.quiz_id, sessionManager.fetchAuthToken()).enqueue(object :
+                Callback<String> {
+                override fun onFailure(call: Call<String>, t: Throwable) {
+                    t.printStackTrace()
+                }
+
+                override fun onResponse(call: Call<String>, response: Response<String>) {
+                    val toast = Toast.makeText(this@QuizResultPage, response.body(), Toast.LENGTH_LONG)
+                    toast.show()
+                }
+            })
 
             try_again_btn.setOnClickListener {
                 QuizQPage.start(this, result.quiz_id)

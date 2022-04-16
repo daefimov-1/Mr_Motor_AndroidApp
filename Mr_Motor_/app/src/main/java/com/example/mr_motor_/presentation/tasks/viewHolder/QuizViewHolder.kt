@@ -1,4 +1,4 @@
-package com.example.mr_motor_.presentation.tasks
+package com.example.mr_motor_.presentation.tasks.viewHolder
 
 import android.app.Activity
 import android.view.View

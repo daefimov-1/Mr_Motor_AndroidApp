@@ -1,4 +1,4 @@
-package com.example.mr_motor_.presentation.tasks
+package com.example.mr_motor_.presentation.tasks.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.example.mr_motor_.R
 import com.example.mr_motor_.domain.models.quiz.ShortQuizVO
+import com.example.mr_motor_.presentation.tasks.diffcallbacks.QuizDiffCallback
+import com.example.mr_motor_.presentation.tasks.viewHolder.QuizViewHolder
 
 class QuizListAdapter(context: Context?) : ListAdapter<ShortQuizVO, QuizViewHolder>(QuizDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuizViewHolder {

@@ -15,6 +15,7 @@
     <color name="search_bar_color">#EEEEEF</color>
     <color name="search_hint_color">#636E72</color>
     <color name="secondary_black">#636E72</color>
+    <color name="extra_light_grey">#C4C4C4</color>
     <color name="light_blue">#74B9FF</color>
     <color name="dark_blue">#0984E3</color>
     <color name="purple">#6C5CE7</color>

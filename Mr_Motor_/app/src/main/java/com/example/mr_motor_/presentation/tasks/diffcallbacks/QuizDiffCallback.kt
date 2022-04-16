@@ -1,4 +1,4 @@
-package com.example.mr_motor_.presentation.tasks
+package com.example.mr_motor_.presentation.tasks.diffcallbacks
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.mr_motor_.domain.models.quiz.ShortQuizVO

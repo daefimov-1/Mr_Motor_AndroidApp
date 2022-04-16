@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mr_motor_.R
 import com.example.mr_motor_.domain.models.ShortQuizesResponse
 import com.example.mr_motor_.domain.models.login.ApiClient
+import com.example.mr_motor_.presentation.tasks.adapters.QuizListAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
