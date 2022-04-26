@@ -8,16 +8,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.example.mr_motor_.R
-import com.example.mr_motor_.data.repository.UserRepositoryImpl
 import com.example.mr_motor_.domain.models.ResponseCallback
-import com.example.mr_motor_.domain.models.login.ApiClient
-import com.example.mr_motor_.domain.models.SignUpRequest
-import com.example.mr_motor_.domain.models.UserResponse
-import com.example.mr_motor_.domain.usecase.LoginUseCase
 import com.example.mr_motor_.domain.usecase.SignUpUseCase
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class SignUpPage : AppCompatActivity(), ResponseCallback {
 

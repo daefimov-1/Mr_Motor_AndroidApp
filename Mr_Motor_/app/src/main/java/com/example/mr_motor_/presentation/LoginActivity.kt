@@ -8,6 +8,7 @@ import android.widget.EditText
 import androidx.fragment.app.FragmentActivity
 import com.example.mr_motor_.R
 import com.example.mr_motor_.data.repository.UserRepositoryImpl
+import com.example.mr_motor_.data.storage.UserSharedPrefStorage
 import com.example.mr_motor_.domain.models.ResponseCallback
 import com.example.mr_motor_.domain.usecase.LoginUseCase
 
@@ -19,7 +20,8 @@ class LoginActivity : AppCompatActivity(), ResponseCallback {
     private lateinit var signUp_button : Button
     private lateinit var forgotPassword_button : Button
 
-    private val userRepository by lazy { UserRepositoryImpl(context = this) }
+    private val userStorage by lazy { UserSharedPrefStorage(context = this) }
+    private val userRepository by lazy { UserRepositoryImpl(userStorage = userStorage) }
     private val loginUseCase by lazy { LoginUseCase(userRepository = userRepository, this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {

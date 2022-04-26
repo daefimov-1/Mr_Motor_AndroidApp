@@ -9,7 +9,6 @@ import android.util.Log
 import android.widget.*
 import com.example.mr_motor_.R
 import com.example.mr_motor_.data.storage.SessionManager
-import com.example.mr_motor_.domain.models.LoginResponse
 import com.example.mr_motor_.domain.models.Post
 import com.example.mr_motor_.domain.models.login.ApiClient
 import com.squareup.picasso.Picasso

@@ -1,2 +1,4 @@
 rootProject.name = "Mr_Motor_"
 include ':app'
+include ':data'
+include ':domain'

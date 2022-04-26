@@ -12,18 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.mr_motor_.R
 import com.example.mr_motor_.data.repository.UserRepositoryImpl
-import com.example.mr_motor_.data.storage.SessionManager
+import com.example.mr_motor_.data.storage.UserSharedPrefStorage
 import com.example.mr_motor_.domain.models.Post
-import com.example.mr_motor_.domain.models.PostResponse
 import com.example.mr_motor_.domain.models.PostsCallback
-import com.example.mr_motor_.domain.models.login.ApiClient
-import com.example.mr_motor_.domain.usecase.LoadCompetitionsUseCase
 import com.example.mr_motor_.domain.usecase.LoadRacersUseCase
-import com.example.mr_motor_.presentation.posts.adapters.CompetitionListAdapter
 import com.example.mr_motor_.presentation.posts.adapters.RacerListAdapter
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class RacerFragment : Fragment(), PostsCallback {
 
@@ -32,7 +25,8 @@ class RacerFragment : Fragment(), PostsCallback {
 
     private lateinit var adapter : RacerListAdapter
 
-    private val userRepository by lazy { UserRepositoryImpl(context = requireContext()) }
+    private val userStorage by lazy { UserSharedPrefStorage(context = requireContext()) }
+    private val userRepository by lazy { UserRepositoryImpl(userStorage = userStorage) }
     private val loadRacersUseCase by lazy {
         LoadRacersUseCase(
             userRepository = userRepository,

@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.animation.AnimationUtils
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentTransaction
 import com.example.mr_motor_.R
 import com.example.mr_motor_.presentation.home.HomeFragment
 import com.example.mr_motor_.presentation.posts.CarFragment

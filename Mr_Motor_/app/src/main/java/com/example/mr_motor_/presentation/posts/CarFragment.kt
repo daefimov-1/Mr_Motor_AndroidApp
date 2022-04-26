@@ -10,29 +10,24 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mr_motor_.R
-import com.example.mr_motor_.data.repository.NewsRepositoryImpl
 import com.example.mr_motor_.data.repository.UserRepositoryImpl
+import com.example.mr_motor_.data.storage.UserSharedPrefStorage
 import com.example.mr_motor_.domain.models.Post
-import com.example.mr_motor_.domain.models.PostResponse
 import com.example.mr_motor_.domain.models.PostsCallback
-import com.example.mr_motor_.domain.models.login.ApiClient
 import com.example.mr_motor_.domain.usecase.LoadCarsUseCase
-import com.example.mr_motor_.domain.usecase.LoadNewsUseCase
 import com.example.mr_motor_.presentation.posts.adapters.CarListAdapter
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class CarFragment : Fragment(), PostsCallback {
     private var recyclerView: RecyclerView? = null
     private var title: TextView? = null
     private lateinit var adapter : CarListAdapter
 
-    private val userRepository by lazy { UserRepositoryImpl(context = requireContext()) }
+    private val userStorage by lazy { UserSharedPrefStorage(context = requireContext()) }
+    private val userRepository by lazy { UserRepositoryImpl(userStorage = userStorage) }
     private val loadCarsUseCase by lazy {
         LoadCarsUseCase(
             userRepository = userRepository,
-            this
+            callback = this
         )
     }
 

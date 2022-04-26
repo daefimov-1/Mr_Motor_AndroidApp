@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.mr_motor_.R
 import com.example.mr_motor_.data.repository.NewsRepositoryImpl
 import com.example.mr_motor_.data.repository.UserRepositoryImpl
+import com.example.mr_motor_.data.storage.PostSharedPrefStorage
+import com.example.mr_motor_.data.storage.UserSharedPrefStorage
 import com.example.mr_motor_.domain.models.ResponseCallback
 import com.example.mr_motor_.domain.usecase.LoadNewsUseCase
 import pl.droidsonroids.gif.GifImageView
@@ -15,8 +17,12 @@ class SplashScreen : AppCompatActivity(), ResponseCallback {
 
     private lateinit var mediaPlayer: MediaPlayer
 
-    private val userRepository by lazy { UserRepositoryImpl(context = this) }
-    private val newsRepository by lazy { NewsRepositoryImpl(context = this) }
+    private val userStorage by lazy { UserSharedPrefStorage(context = this) }
+    private val userRepository by lazy { UserRepositoryImpl(userStorage = userStorage) }
+
+    private val postStorage by lazy { PostSharedPrefStorage(context = this) }
+    private val newsRepository by lazy { NewsRepositoryImpl(postStorage = postStorage) }
+
     private val loadNewsUseCase by lazy {
         LoadNewsUseCase(
             newsRepository = newsRepository,

@@ -16,7 +16,6 @@ import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
 import com.example.mr_motor_.R
 import com.example.mr_motor_.data.storage.SessionManager
-import com.example.mr_motor_.domain.models.ResponseCallback
 import com.example.mr_motor_.domain.models.login.ApiClient
 import com.example.mr_motor_.domain.models.quiz.QuizItemVO
 import com.example.mr_motor_.domain.models.quiz.QuizVO

@@ -11,9 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mr_motor_.R
 import com.example.mr_motor_.data.storage.SessionManager
 import com.example.mr_motor_.domain.models.QuizResultResponse
-import com.example.mr_motor_.domain.models.ShortQuizesResponse
 import com.example.mr_motor_.domain.models.login.ApiClient
-import com.example.mr_motor_.presentation.posts.adapters.CarListAdapter
 import com.example.mr_motor_.presentation.tasks.adapters.MyQuizResultAdapter
 import retrofit2.Call
 import retrofit2.Callback
