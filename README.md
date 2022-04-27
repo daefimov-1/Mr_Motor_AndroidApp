@@ -8,7 +8,7 @@ RecyclerView
 DiffUtil  
 SharedAxis  
 CallBacks  
-Clean Architecture (не на всех activity)  
+Clean Architecture 
 Mediaplayer  
 Gif (для SplashScreen)  
 AlertDialog  
