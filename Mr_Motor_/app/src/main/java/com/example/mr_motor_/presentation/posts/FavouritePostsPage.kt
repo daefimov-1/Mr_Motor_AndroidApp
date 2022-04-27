@@ -8,44 +8,43 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mr_motor_.R
-import com.example.mr_motor_.data.storage.SessionManager
-import com.example.mr_motor_.domain.models.PostResponse
-import com.example.mr_motor_.domain.models.login.ApiClient
+import com.example.mr_motor_.data.repository.UserRepositoryImpl
+import com.example.mr_motor_.data.storage.UserSharedPrefStorage
+import com.example.mr_motor_.domain.models.Post
+import com.example.mr_motor_.domain.models.PostsCallback
+import com.example.mr_motor_.domain.usecase.LoadLikedPostsUseCase
 import com.example.mr_motor_.presentation.posts.adapters.NewsListAdapter
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-class FavouritePostsPage : AppCompatActivity() {
+class FavouritePostsPage : AppCompatActivity(), PostsCallback {
 
     private lateinit var title : TextView
     private lateinit var recyclerView: RecyclerView
-    private lateinit var sessionManager : SessionManager
+    private lateinit var adapter : NewsListAdapter
+
+    private val userStorage by lazy { UserSharedPrefStorage(context = this) }
+    private val userRepository by lazy { UserRepositoryImpl(userStorage = userStorage) }
+    private val loadLikedPostsUseCase by lazy { LoadLikedPostsUseCase(userRepository = userRepository, this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
         setContentView(R.layout.news_fragment)
 
-        sessionManager = SessionManager(this)
-
         title = findViewById(R.id.tv_news)
         title.text = getString(R.string.favourite_posts)
         recyclerView = findViewById(R.id.rv_newsPage)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = NewsListAdapter(this)
-        ApiClient.getApiService().getLikedPosts(sessionManager.fetchAuthToken()).enqueue(object :
-            Callback<PostResponse> {
-            override fun onFailure(call: Call<PostResponse>, t: Throwable) {
-                t.printStackTrace()
-            }
+        adapter = NewsListAdapter(this)
 
-            override fun onResponse(call: Call<PostResponse>, response: Response<PostResponse>) {
-                adapter.submitList(response.body()?.posts)
-            }
-        })
+        loadLikedPostsUseCase.execute()
 
         recyclerView.adapter = adapter
+    }
+
+    override fun response(result: List<Post>?) {
+        if(result != null){
+            adapter.submitList(result)
+        }
     }
 
     companion object{
@@ -54,4 +53,5 @@ class FavouritePostsPage : AppCompatActivity() {
             caller.startActivity(intent)
         }
     }
+
 }

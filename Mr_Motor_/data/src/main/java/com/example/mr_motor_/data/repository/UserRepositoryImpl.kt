@@ -17,4 +17,12 @@ class UserRepositoryImpl(private val userStorage: UserStorage) : UserRepository 
     override fun saveUserData(user: UserResponse) {
         userStorage.saveUser(user = user)
     }
+
+    override fun getUserData() : UserResponse? {
+        return userStorage.fetchUser()
+    }
+
+    override fun deleteUserData() {
+        userStorage.deleteUserData()
+    }
 }

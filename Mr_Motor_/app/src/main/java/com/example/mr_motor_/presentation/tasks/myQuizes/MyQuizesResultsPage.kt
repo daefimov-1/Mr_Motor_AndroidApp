@@ -9,19 +9,29 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mr_motor_.R
+import com.example.mr_motor_.data.repository.UserRepositoryImpl
 import com.example.mr_motor_.data.storage.SessionManager
+import com.example.mr_motor_.data.storage.UserSharedPrefStorage
 import com.example.mr_motor_.domain.models.QuizResultResponse
+import com.example.mr_motor_.domain.models.QuizResultsCallback
 import com.example.mr_motor_.domain.models.login.ApiClient
+import com.example.mr_motor_.domain.models.quiz.QuizResultVO
+import com.example.mr_motor_.domain.usecase.GetQuizzesResultsUseCase
+import com.example.mr_motor_.domain.usecase.GetUserQuizzesUseCase
 import com.example.mr_motor_.presentation.tasks.adapters.MyQuizResultAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MyQuizesResultsPage : AppCompatActivity() {
+class MyQuizesResultsPage : AppCompatActivity(), QuizResultsCallback {
 
     private var recyclerView: RecyclerView? = null
     private var title: TextView? = null
-    private lateinit var sessionManager: SessionManager
+    private lateinit var adapter : MyQuizResultAdapter
+
+    private val userStorage by lazy { UserSharedPrefStorage(context = this) }
+    private val userRepository by lazy { UserRepositoryImpl(userStorage = userStorage) }
+    private val getQuizzesResultsUseCase by lazy { GetQuizzesResultsUseCase(userRepository = userRepository, this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,23 +41,20 @@ class MyQuizesResultsPage : AppCompatActivity() {
         title = findViewById(R.id.tv_posts)
         title?.text = getString(R.string.my_quiz_results)
 
-        sessionManager = SessionManager(this)
-
         recyclerView = findViewById(R.id.rv_postsPage)
         recyclerView?.layoutManager = LinearLayoutManager(this)
-        val adapter = MyQuizResultAdapter(this)
-        ApiClient.getApiService().getQuizesResults(sessionManager.fetchAuthToken()).enqueue(object :
-            Callback<QuizResultResponse> {
-            override fun onFailure(call: Call<QuizResultResponse>, t: Throwable) {
-                t.printStackTrace()
-                Log.e("QUIZ_APICLIENT", "doesn't work")
-            }
+        adapter = MyQuizResultAdapter(this)
 
-            override fun onResponse(call: Call<QuizResultResponse>, response: Response<QuizResultResponse>) {
-                adapter.submitList(response.body()?.quizResults)
-            }
-        })
+        getQuizzesResultsUseCase.execute()
+
         recyclerView?.adapter = adapter
+    }
+
+
+    override fun response(result: List<QuizResultVO>?) {
+        if(result != null){
+            adapter.submitList(result)
+        }
     }
 
     companion object{
@@ -56,4 +63,5 @@ class MyQuizesResultsPage : AppCompatActivity() {
             caller.startActivity(intent)
         }
     }
+
 }

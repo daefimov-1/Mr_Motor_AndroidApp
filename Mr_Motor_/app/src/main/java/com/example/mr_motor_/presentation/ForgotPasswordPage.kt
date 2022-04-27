@@ -8,16 +8,19 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.example.mr_motor_.R
-import com.example.mr_motor_.domain.models.login.ApiClient
-import com.example.mr_motor_.domain.models.ForgotPasswordRequest
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.example.mr_motor_.domain.models.ResponseCallback
+import com.example.mr_motor_.domain.usecase.ForgotPasswordUseCase
 
-class ForgotPasswordPage : AppCompatActivity() {
+class ForgotPasswordPage : AppCompatActivity(), ResponseCallback {
 
     private lateinit var email : EditText
     private lateinit var resetPassword : Button
+
+    private val forgotPasswordUseCase by lazy {
+        ForgotPasswordUseCase(
+            this
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,19 +34,7 @@ class ForgotPasswordPage : AppCompatActivity() {
         resetPassword.setOnClickListener {
             if(email.text.isNotEmpty()){
 
-                ApiClient.getApiService().forgotPassword(ForgotPasswordRequest(email.text.toString())).enqueue(object : Callback<String> {
-                    override fun onFailure(call: Call<String>, t: Throwable) {
-                        t.printStackTrace()
-                        var toast : Toast = Toast.makeText(this@ForgotPasswordPage, "NOOOO", Toast.LENGTH_LONG)
-                        toast.show()
-                        finish()
-                    }
-
-                    override fun onResponse(call: Call<String>, response: Response<String>) {
-                        var toast : Toast = Toast.makeText(this@ForgotPasswordPage, "YEsss", Toast.LENGTH_LONG)
-                        toast.show()
-                    }
-                })
+                forgotPasswordUseCase.execute(email.text.toString())
 
             }
         }
@@ -51,8 +42,20 @@ class ForgotPasswordPage : AppCompatActivity() {
 
     companion object{
         fun start(caller : Activity){
-            var intent = Intent(caller, ForgotPasswordPage::class.java)
+            val intent = Intent(caller, ForgotPasswordPage::class.java)
             caller.startActivity(intent)
+        }
+    }
+
+    override fun response(result: Boolean) {
+        val toast : Toast
+        if(result){
+            toast = Toast.makeText(this@ForgotPasswordPage, "Letter is send on your email", Toast.LENGTH_LONG)
+            toast.show()
+            finish()
+        }else{
+            toast = Toast.makeText(this@ForgotPasswordPage, "No account on such email", Toast.LENGTH_LONG)
+            toast.show()
         }
     }
 }

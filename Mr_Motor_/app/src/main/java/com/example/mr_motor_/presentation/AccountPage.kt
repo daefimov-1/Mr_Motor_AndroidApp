@@ -13,7 +13,9 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import com.example.mr_motor_.R
+import com.example.mr_motor_.data.repository.UserRepositoryImpl
 import com.example.mr_motor_.data.storage.SessionManager
+import com.example.mr_motor_.data.storage.UserSharedPrefStorage
 import com.example.mr_motor_.domain.models.UserResponse
 import com.example.mr_motor_.presentation.posts.FavouritePostsPage
 import com.example.mr_motor_.presentation.tasks.myQuizes.MyQuizesPage
@@ -29,6 +31,8 @@ class AccountPage : AppCompatActivity() {
     private lateinit var myQuizzesButton : View
     private lateinit var quizzesResultsButton : View
 
+    private val userStorage by lazy { UserSharedPrefStorage(context = this) }
+    private val userRepository by lazy { UserRepositoryImpl(userStorage = userStorage) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,11 +76,7 @@ class AccountPage : AppCompatActivity() {
             MyQuizesResultsPage.start(this)
         }
 
-
-        val sessionManager : SessionManager = SessionManager(this)
-        val user : UserResponse? = sessionManager.fetchUser()
-
-        Log.e("USER", user.toString())
+        val user : UserResponse? = userRepository.getUserData()
 
         if(user != null){
             findViewById<TextView>(R.id.tv_name).text = user.name
@@ -93,7 +93,7 @@ class AccountPage : AppCompatActivity() {
 
         }
         findViewById<Button>(R.id.btn_logout).setOnClickListener {
-            sessionManager.deleteUserData()
+            userRepository.deleteUserData()
             finish()
         }
     }
@@ -101,8 +101,7 @@ class AccountPage : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        val sessionManager : SessionManager = SessionManager(this)
-        val user : UserResponse? = sessionManager.fetchUser()
+        val user : UserResponse? = userRepository.getUserData()
 
         if(user != null){
             findViewById<TextView>(R.id.tv_name).text = user.name

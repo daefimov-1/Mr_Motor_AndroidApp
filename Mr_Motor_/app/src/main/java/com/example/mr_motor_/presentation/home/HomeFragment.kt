@@ -11,7 +11,9 @@ import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.mr_motor_.R
+import com.example.mr_motor_.data.repository.UserRepositoryImpl
 import com.example.mr_motor_.data.storage.SessionManager
+import com.example.mr_motor_.data.storage.UserSharedPrefStorage
 import com.example.mr_motor_.domain.models.UserResponse
 import com.example.mr_motor_.presentation.AccountPage
 import com.example.mr_motor_.presentation.LoginActivity
@@ -30,6 +32,11 @@ class HomeFragment : Fragment() {
     private var racerButton : View? = null
     private var competitionButton : View? = null
 
+    private lateinit var user : UserResponse
+
+    private val userStorage by lazy { UserSharedPrefStorage(context = requireContext()) }
+    private val userRepository by lazy { UserRepositoryImpl(userStorage = userStorage) }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,9 +45,7 @@ class HomeFragment : Fragment() {
         val view : View? = inflater.inflate(R.layout.home_fragment, container, false)
         accountButton = view?.findViewById<ImageButton>(R.id.ib_profile)
         accountButton?.setOnClickListener {
-            val sessionManager : SessionManager = SessionManager(requireContext())
-            Log.d("CHECK_HAS_TOKEN", sessionManager.fetchAuthToken().toString())
-            if(sessionManager.fetchAuthToken() == null) {
+            if(userRepository.getAuthToken() == "") {
                 LoginActivity.start(activity)
             }
             else {
@@ -64,13 +69,12 @@ class HomeFragment : Fragment() {
             (activity as MainActivity?)!!.onNavigationItemSelected2(3)
         }
 
-        val sessionManager : SessionManager = SessionManager(requireContext())
-        val user : UserResponse? = sessionManager.fetchUser()
+        if(userRepository.getUserData() != null){
 
-        if(user != null){
+            user = userRepository.getUserData()!!
 
             if(user.avatar.isNotEmpty()){
-                var encoded : String = user.avatar.substring(user.avatar.indexOf(',')+1)
+                val encoded : String = user.avatar.substring(user.avatar.indexOf(',')+1)
 
                 val decodedString: ByteArray = Base64.decode(encoded, Base64.DEFAULT)
                 val bitmap =
@@ -87,13 +91,12 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        val sessionManager : SessionManager = SessionManager(requireContext())
-        val user : UserResponse? = sessionManager.fetchUser()
+        if(userRepository.getUserData() != null){
 
-        if(user != null){
+            user = userRepository.getUserData()!!
 
             if(user.avatar.isNotEmpty()){
-                var encoded : String = user.avatar.substring(user.avatar.indexOf(',')+1)
+                val encoded : String = user.avatar.substring(user.avatar.indexOf(',')+1)
 
                 val decodedString: ByteArray = Base64.decode(encoded, Base64.DEFAULT)
                 val bitmap =

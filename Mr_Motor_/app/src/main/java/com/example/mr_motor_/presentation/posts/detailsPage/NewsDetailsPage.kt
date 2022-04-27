@@ -5,18 +5,16 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.*
 import com.example.mr_motor_.R
-import com.example.mr_motor_.data.storage.SessionManager
+import com.example.mr_motor_.data.repository.UserRepositoryImpl
+import com.example.mr_motor_.data.storage.UserSharedPrefStorage
 import com.example.mr_motor_.domain.models.Post
-import com.example.mr_motor_.domain.models.login.ApiClient
+import com.example.mr_motor_.domain.models.ResponseCallback
+import com.example.mr_motor_.domain.usecase.LikeUseCase
 import com.squareup.picasso.Picasso
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-class NewsDetailsPage : AppCompatActivity() {
+class NewsDetailsPage : AppCompatActivity(), ResponseCallback {
 
     private lateinit var news : Post
     private var title : TextView? = null
@@ -25,7 +23,9 @@ class NewsDetailsPage : AppCompatActivity() {
     private var image : ImageView? = null
     private var buttonGoToSource : Button? = null
 
-    private lateinit var sessionManager : SessionManager
+    private val userStorage by lazy { UserSharedPrefStorage(context = this) }
+    private val userRepository by lazy { UserRepositoryImpl(userStorage = userStorage) }
+    private val likeUseCase by lazy { LikeUseCase(userRepository = userRepository, this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +33,6 @@ class NewsDetailsPage : AppCompatActivity() {
         setContentView(R.layout.news_detailspage)
 
         supportActionBar?.hide()
-
-        sessionManager = SessionManager(this)
 
         title = findViewById(R.id.tv_title)
         text = findViewById(R.id.tv_text)
@@ -60,29 +58,8 @@ class NewsDetailsPage : AppCompatActivity() {
             }
 
             star?.setOnClickListener {
-                ApiClient.getApiService().like(news.id, sessionManager.fetchAuthToken()).enqueue(object :
-                    Callback<String> {
-                    override fun onFailure(call: Call<String>, t: Throwable) {
-                        t.printStackTrace()
-                        Log.e("LIKE", "failed")
-                    }
-
-                    override fun onResponse(call: Call<String>, response: Response<String>) {
-                        val result = response.body().toString()
-
-                        val toast = Toast.makeText(this@NewsDetailsPage, result, Toast.LENGTH_LONG)
-
-                        if(result == "Successfully Liked!"){
-                            star?.setImageResource(R.drawable.ic_star_favourite)
-                        }
-                        else{
-                            star?.setImageResource(R.drawable.ic_star)
-                        }
-                        toast.show()
-                    }
-                })
+                likeUseCase.execute(news.id)
             }
-
         }
 
     }
@@ -95,6 +72,15 @@ class NewsDetailsPage : AppCompatActivity() {
                 intent.putExtra(OPEN_NEWS, news)
             }
             caller.startActivity(intent)
+        }
+    }
+
+    override fun response(result: Boolean) {
+        if(result){
+            star?.setImageResource(R.drawable.ic_star_favourite)
+        }
+        else{
+            star?.setImageResource(R.drawable.ic_star)
         }
     }
 }

@@ -8,19 +8,22 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mr_motor_.R
-import com.example.mr_motor_.data.storage.SessionManager
-import com.example.mr_motor_.domain.models.ShortQuizesResponse
-import com.example.mr_motor_.domain.models.login.ApiClient
+import com.example.mr_motor_.data.repository.UserRepositoryImpl
+import com.example.mr_motor_.data.storage.UserSharedPrefStorage
+import com.example.mr_motor_.domain.models.ShortQuizzesCallback
+import com.example.mr_motor_.domain.models.quiz.ShortQuizVO
+import com.example.mr_motor_.domain.usecase.GetUserQuizzesUseCase
 import com.example.mr_motor_.presentation.tasks.adapters.QuizListAdapter
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-class MyQuizesPage : AppCompatActivity() {
+class MyQuizesPage : AppCompatActivity(), ShortQuizzesCallback {
 
+    private lateinit var adapter : QuizListAdapter
     private var recyclerView : RecyclerView? = null
     private var title: TextView? = null
-    private lateinit var sessionManager: SessionManager
+
+    private val userStorage by lazy { UserSharedPrefStorage(context = this) }
+    private val userRepository by lazy { UserRepositoryImpl(userStorage = userStorage) }
+    private val getUserQuizzesUseCase by lazy { GetUserQuizzesUseCase(userRepository = userRepository, this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,22 +33,19 @@ class MyQuizesPage : AppCompatActivity() {
         title = findViewById(R.id.tv_posts)
         title?.text = getString(R.string.my_quizzes)
 
-        sessionManager = SessionManager(this)
-
         recyclerView = findViewById(R.id.rv_postsPage)
         recyclerView?.layoutManager = LinearLayoutManager(this)
-        val adapter = QuizListAdapter(this)
-        ApiClient.getApiService().getMyQuizzes(sessionManager.fetchAuthToken()).enqueue(object :
-            Callback<ShortQuizesResponse> {
-            override fun onFailure(call: Call<ShortQuizesResponse>, t: Throwable) {
-                t.printStackTrace()
-            }
+        adapter = QuizListAdapter(this)
 
-            override fun onResponse(call: Call<ShortQuizesResponse>, response: Response<ShortQuizesResponse>) {
-                adapter.submitList(response.body()?.quizzes)
-            }
-        })
+        getUserQuizzesUseCase.execute()
+
         recyclerView?.adapter = adapter
+    }
+
+    override fun response(result: List<ShortQuizVO>?) {
+        if(result != null){
+            adapter.submitList(result)
+        }
     }
 
     companion object{

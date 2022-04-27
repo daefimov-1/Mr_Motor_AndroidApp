@@ -21,25 +21,32 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.mr_motor_.R
-import com.example.mr_motor_.data.storage.SessionManager
-import com.example.mr_motor_.domain.models.login.ApiClient
-import com.example.mr_motor_.domain.models.SignUpRequest
+import com.example.mr_motor_.data.repository.UserRepositoryImpl
+import com.example.mr_motor_.data.storage.UserSharedPrefStorage
+import com.example.mr_motor_.domain.models.ResponseCallback
 import com.example.mr_motor_.domain.models.UserResponse
+import com.example.mr_motor_.domain.usecase.UpdateUserDataUseCase
 import com.google.android.material.transition.platform.MaterialSharedAxis
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.ByteArrayOutputStream
 
 
-class AccountSettingsPage : AppCompatActivity() {
+class AccountSettingsPage : AppCompatActivity(), ResponseCallback {
 
     private lateinit var nameEditText: EditText
     private lateinit var saveButton: ImageButton
     private lateinit var editAvatarButton: ImageButton
     private lateinit var imageAvatar: ImageView
 
-    private var avatarString : String? = null
+    private var avatarString: String? = null
+
+    private val userStorage by lazy { UserSharedPrefStorage(context = this) }
+    private val userRepository by lazy { UserRepositoryImpl(userStorage = userStorage) }
+    private val updateUserDataUseCase by lazy {
+        UpdateUserDataUseCase(
+            userRepository = userRepository,
+            this
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -54,21 +61,18 @@ class AccountSettingsPage : AppCompatActivity() {
         imageAvatar = findViewById(R.id.iv_account_photo)
 
         editAvatarButton.setOnClickListener {
-            if(checkAndRequestPermissions(this)){
+            if (checkAndRequestPermissions(this)) {
                 chooseImage(this);
             }
         }
-
-        val sessionManager: SessionManager = SessionManager(this)
-        val user: UserResponse? = sessionManager.fetchUser()
 
         if (user != null) {
             findViewById<TextView>(R.id.tv_name).text = user.name
             findViewById<TextView>(R.id.tv_email).text = user.email
             nameEditText.setText(user.name)
 
-            if(user.avatar.isNotEmpty()){
-                var encoded : String = user.avatar.substring(user.avatar.indexOf(',')+1)
+            if (user.avatar.isNotEmpty()) {
+                val encoded: String = user.avatar.substring(user.avatar.indexOf(',') + 1)
 
                 val decodedString: ByteArray = Base64.decode(encoded, Base64.DEFAULT)
                 val bitmap =
@@ -78,45 +82,15 @@ class AccountSettingsPage : AppCompatActivity() {
         }
 
         saveButton.setOnClickListener {
-            if (user != null && (nameEditText.text.toString() != user?.name || avatarString != null)) {
+            if (user != null && (nameEditText.text.toString() != user.name || avatarString != null)) {
 
-                Log.d("WORKS", "ffff")
-                ApiClient.getApiService().update(
-                    SignUpRequest(
-                        name = nameEditText.text.toString(),
-                        email = user.email,
-                        password = "",
-                        avatar = (if(avatarString == null){
-                            user.avatar
-                        }else{
-                            avatarString
-                        })!!
+                updateUserDataUseCase.execute(
+                    name = nameEditText.text.toString(),
+                    email = user.email,
+                    avatarString = avatarString,
+                    userAvatar = user.avatar
+                )
 
-                    ), sessionManager.fetchAuthToken()
-                ).enqueue(object : Callback<UserResponse> {
-                    override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                        var toast: Toast = Toast.makeText(
-                            this@AccountSettingsPage,
-                            "Not successfully changed!",
-                            Toast.LENGTH_LONG
-                        )
-                        toast.show()
-                    }
-
-                    override fun onResponse(
-                        call: Call<UserResponse>,
-                        response: Response<UserResponse>
-                    ) {
-                        sessionManager.saveUser(response.body()!!)
-                        var toast: Toast = Toast.makeText(
-                            this@AccountSettingsPage,
-                            "Successfully changed!",
-                            Toast.LENGTH_LONG
-                        )
-                        toast.show()
-                        finish()
-                    }
-                })
             }
         }
 
@@ -140,7 +114,7 @@ class AccountSettingsPage : AppCompatActivity() {
     //HERE STARTS CODE WITH CHANGING IMAGE FOR AVATAR
     val REQUEST_ID_MULTIPLE_PERMISSIONS = 1
 
-    fun checkAndRequestPermissions(context: Activity?): Boolean {
+    private fun checkAndRequestPermissions(context: Activity?): Boolean {
         val WExtstorePermission = ContextCompat.checkSelfPermission(
             context!!,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -207,7 +181,7 @@ class AccountSettingsPage : AppCompatActivity() {
             "Exit"
         ) // create a menuOption Array
         // create a dialog for showing the optionsMenu
-        val builder  = AlertDialog.Builder(context)
+        val builder = AlertDialog.Builder(context)
         // set the items in builder
         builder.setItems(optionsMenu,
             DialogInterface.OnClickListener { dialogInterface, i ->
@@ -245,7 +219,8 @@ class AccountSettingsPage : AppCompatActivity() {
                         baos
                     ) //selectedImage is the bitmap object
                     val b: ByteArray = baos.toByteArray()
-                    avatarString = "data:image/jpeg;base64," + Base64.encodeToString(b, Base64.DEFAULT)
+                    avatarString =
+                        "data:image/jpeg;base64," + Base64.encodeToString(b, Base64.DEFAULT)
                 }
                 1 -> if (resultCode == RESULT_OK && data != null) {
                     val selectedImage: Uri? = data.data
@@ -270,16 +245,42 @@ class AccountSettingsPage : AppCompatActivity() {
                                 baos
                             ) //img is the bitmap object
                             val b: ByteArray = baos.toByteArray()
-                            avatarString = if(picturePath.endsWith(".jpeg") || picturePath.endsWith(".jpg")){
-                                "data:image/jpeg;base64," + Base64.encodeToString(b, Base64.DEFAULT)
-                            } else{
-                                "data:image/png;base64," + Base64.encodeToString(b, Base64.DEFAULT)
-                            }
+                            avatarString =
+                                if (picturePath.endsWith(".jpeg") || picturePath.endsWith(".jpg")) {
+                                    "data:image/jpeg;base64," + Base64.encodeToString(
+                                        b,
+                                        Base64.DEFAULT
+                                    )
+                                } else {
+                                    "data:image/png;base64," + Base64.encodeToString(
+                                        b,
+                                        Base64.DEFAULT
+                                    )
+                                }
 
                         }
                     }
                 }
             }
+        }
+    }
+
+    override fun response(result: Boolean) {
+        if (result) {
+            val toast: Toast = Toast.makeText(
+                this@AccountSettingsPage,
+                "Successfully changed!",
+                Toast.LENGTH_LONG
+            )
+            toast.show()
+            finish()
+        } else {
+            val toast: Toast = Toast.makeText(
+                this@AccountSettingsPage,
+                "Not successfully changed!",
+                Toast.LENGTH_LONG
+            )
+            toast.show()
         }
     }
 
@@ -290,4 +291,6 @@ class AccountSettingsPage : AppCompatActivity() {
             caller.startActivity(intent, activityOptions.toBundle())
         }
     }
+
+
 }
