@@ -18,10 +18,10 @@ class NoInternetPage : AppCompatActivity(), ResponseCallback {
 
     private lateinit var button : ImageButton
 
-    private val userStorage by lazy { UserSharedPrefStorage(context = this) }
+    private val userStorage by lazy { UserSharedPrefStorage(context = applicationContext) }
     private val userRepository by lazy { UserRepositoryImpl(userStorage = userStorage) }
 
-    private val postStorage by lazy { PostSharedPrefStorage(context = this) }
+    private val postStorage by lazy { PostSharedPrefStorage(context = applicationContext) }
     private val newsRepository by lazy { NewsRepositoryImpl(postStorage = postStorage) }
 
     private val loadNewsUseCase by lazy {

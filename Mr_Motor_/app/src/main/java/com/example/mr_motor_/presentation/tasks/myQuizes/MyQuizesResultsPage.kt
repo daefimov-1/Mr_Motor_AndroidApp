@@ -21,7 +21,7 @@ class MyQuizesResultsPage : AppCompatActivity(), QuizResultsCallback {
     private var title: TextView? = null
     private lateinit var adapter : MyQuizResultAdapter
 
-    private val userStorage by lazy { UserSharedPrefStorage(context = this) }
+    private val userStorage by lazy { UserSharedPrefStorage(context = applicationContext) }
     private val userRepository by lazy { UserRepositoryImpl(userStorage = userStorage) }
     private val getQuizzesResultsUseCase by lazy { GetQuizzesResultsUseCase(userRepository = userRepository, this) }
 

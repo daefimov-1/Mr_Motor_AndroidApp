@@ -21,7 +21,7 @@ class MyQuizesPage : AppCompatActivity(), ShortQuizzesCallback {
     private var recyclerView : RecyclerView? = null
     private var title: TextView? = null
 
-    private val userStorage by lazy { UserSharedPrefStorage(context = this) }
+    private val userStorage by lazy { UserSharedPrefStorage(context = applicationContext) }
     private val userRepository by lazy { UserRepositoryImpl(userStorage = userStorage) }
     private val getUserQuizzesUseCase by lazy { GetUserQuizzesUseCase(userRepository = userRepository, this) }
 

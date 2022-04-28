@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.example.mr_motor_.R
 import com.example.mr_motor_.domain.models.ResponseCallback
 import com.example.mr_motor_.domain.usecase.SignUpUseCase
@@ -18,7 +19,7 @@ class SignUpPage : AppCompatActivity(), ResponseCallback {
     private lateinit var password: EditText
     private lateinit var signUpButton: Button
 
-    private val signUpUseCase by lazy { SignUpUseCase(this) }
+    private lateinit var vm : AuthorizationViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,18 +32,13 @@ class SignUpPage : AppCompatActivity(), ResponseCallback {
         password = findViewById(R.id.et_signUpPage_password)
         signUpButton = findViewById(R.id.btn_sign_up)
 
+        vm = ViewModelProvider(this, AuthorizationViewModelFactory(applicationContext, this)).get(AuthorizationViewModel::class.java)
+
         signUpButton.setOnClickListener {
             if (name.text.isNotEmpty() && email.text.isNotEmpty() && password.text.isNotEmpty()) {
 
-                signUpUseCase.execute(name = name.text.toString(), email = email.text.toString(), password = password.text.toString())
+                vm.signUp(name = name.text.toString(), email = email.text.toString(), password = password.text.toString())
             }
-        }
-    }
-
-    companion object {
-        fun start(caller: Activity) {
-            val intent = Intent(caller, SignUpPage::class.java)
-            caller.startActivity(intent)
         }
     }
 
@@ -58,5 +54,12 @@ class SignUpPage : AppCompatActivity(), ResponseCallback {
             toast.show()
         }
 
+    }
+
+    companion object {
+        fun start(caller: Activity) {
+            val intent = Intent(caller, SignUpPage::class.java)
+            caller.startActivity(intent)
+        }
     }
 }

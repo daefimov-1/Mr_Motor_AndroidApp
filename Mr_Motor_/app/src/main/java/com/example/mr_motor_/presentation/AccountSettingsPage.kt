@@ -39,7 +39,7 @@ class AccountSettingsPage : AppCompatActivity(), ResponseCallback {
 
     private var avatarString: String? = null
 
-    private val userStorage by lazy { UserSharedPrefStorage(context = this) }
+    private val userStorage by lazy { UserSharedPrefStorage(context = applicationContext) }
     private val userRepository by lazy { UserRepositoryImpl(userStorage = userStorage) }
     private val updateUserDataUseCase by lazy {
         UpdateUserDataUseCase(

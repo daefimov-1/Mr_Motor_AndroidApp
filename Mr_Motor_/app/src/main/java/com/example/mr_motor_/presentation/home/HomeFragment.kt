@@ -3,6 +3,7 @@ package com.example.mr_motor_.presentation.home
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,7 +44,7 @@ class HomeFragment : Fragment() {
         val view : View? = inflater.inflate(R.layout.home_fragment, container, false)
         accountButton = view?.findViewById<ImageButton>(R.id.ib_profile)
         accountButton?.setOnClickListener {
-            if(userRepository.getAuthToken() == "") {
+            if(userRepository.getAuthToken() == "null") {
                 LoginActivity.start(activity)
             }
             else {

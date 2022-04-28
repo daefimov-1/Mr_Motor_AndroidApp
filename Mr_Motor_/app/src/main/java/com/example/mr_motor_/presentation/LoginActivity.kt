@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProvider
 import com.example.mr_motor_.R
 import com.example.mr_motor_.data.repository.UserRepositoryImpl
 import com.example.mr_motor_.data.storage.UserSharedPrefStorage
@@ -20,9 +21,7 @@ class LoginActivity : AppCompatActivity(), ResponseCallback {
     private lateinit var signUp_button : Button
     private lateinit var forgotPassword_button : Button
 
-    private val userStorage by lazy { UserSharedPrefStorage(context = this) }
-    private val userRepository by lazy { UserRepositoryImpl(userStorage = userStorage) }
-    private val loginUseCase by lazy { LoginUseCase(userRepository = userRepository, this) }
+    private lateinit var vm : AuthorizationViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,14 +36,11 @@ class LoginActivity : AppCompatActivity(), ResponseCallback {
         signUp_button = findViewById(R.id.btn_sign_up)
         forgotPassword_button = findViewById(R.id.btn_forgot_password)
 
+        vm = ViewModelProvider(this, AuthorizationViewModelFactory(applicationContext, this)).get(AuthorizationViewModel::class.java)
 
         login_button.setOnClickListener {
 
-            if(email.text.isNotEmpty() && password.text.isNotEmpty()){
-
-                loginUseCase.execute(email = email.text.toString(), password = password.text.toString())
-
-            }
+            vm.login(email = email.text.toString(), password = password.text.toString())
 
         }
 

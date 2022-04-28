@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
@@ -29,7 +30,7 @@ class AccountPage : AppCompatActivity() {
     private lateinit var myQuizzesButton : View
     private lateinit var quizzesResultsButton : View
 
-    private val userStorage by lazy { UserSharedPrefStorage(context = this) }
+    private val userStorage by lazy { UserSharedPrefStorage(context = applicationContext) }
     private val userRepository by lazy { UserRepositoryImpl(userStorage = userStorage) }
 
     override fun onCreate(savedInstanceState: Bundle?) {

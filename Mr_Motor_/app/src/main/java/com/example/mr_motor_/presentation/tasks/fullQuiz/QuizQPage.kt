@@ -43,7 +43,7 @@ class QuizQPage : AppCompatActivity(), QuizCallback {
     private lateinit var vLoading: View
     private lateinit var pbLoading: ProgressBar
 
-    private val userStorage by lazy { UserSharedPrefStorage(context = this) }
+    private val userStorage by lazy { UserSharedPrefStorage(context = applicationContext) }
     private val userRepository by lazy { UserRepositoryImpl(userStorage = userStorage) }
     private val getQuizUseCase by lazy { GetQuizUseCase(userRepository = userRepository, this) }
 

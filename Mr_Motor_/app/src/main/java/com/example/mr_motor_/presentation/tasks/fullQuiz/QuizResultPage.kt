@@ -24,7 +24,7 @@ class QuizResultPage : AppCompatActivity() {
     private lateinit var amount : TextView
     private lateinit var tryAgainButton : Button
 
-    private val userStorage by lazy { UserSharedPrefStorage(context = this) }
+    private val userStorage by lazy { UserSharedPrefStorage(context = applicationContext) }
     private val userRepository by lazy { UserRepositoryImpl(userStorage = userStorage) }
     private val postResultUseCase by lazy { PostResultOfQuiz(userRepository = userRepository) }
 

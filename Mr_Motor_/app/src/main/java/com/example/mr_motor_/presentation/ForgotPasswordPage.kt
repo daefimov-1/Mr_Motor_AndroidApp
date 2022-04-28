@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.example.mr_motor_.R
 import com.example.mr_motor_.domain.models.ResponseCallback
 import com.example.mr_motor_.domain.usecase.ForgotPasswordUseCase
@@ -16,11 +17,7 @@ class ForgotPasswordPage : AppCompatActivity(), ResponseCallback {
     private lateinit var email : EditText
     private lateinit var resetPassword : Button
 
-    private val forgotPasswordUseCase by lazy {
-        ForgotPasswordUseCase(
-            this
-        )
-    }
+    private lateinit var vm : AuthorizationViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,10 +28,12 @@ class ForgotPasswordPage : AppCompatActivity(), ResponseCallback {
         email = findViewById(R.id.et_forgotPasswordPage_email)
         resetPassword = findViewById(R.id.btn_reset_password)
 
+        vm = ViewModelProvider(this, AuthorizationViewModelFactory(applicationContext, this)).get(AuthorizationViewModel::class.java)
+
         resetPassword.setOnClickListener {
             if(email.text.isNotEmpty()){
 
-                forgotPasswordUseCase.execute(email.text.toString())
+                vm.resetPassword(email.text.toString())
 
             }
         }
