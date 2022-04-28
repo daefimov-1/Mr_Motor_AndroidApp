@@ -9,20 +9,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mr_motor_.R
-import com.example.mr_motor_.data.storage.SessionManager
-import com.example.mr_motor_.domain.objects.PostType
+import com.example.mr_motor_.data.repository.NewsRepositoryImpl
+import com.example.mr_motor_.data.storage.PostSharedPrefStorage
 import com.example.mr_motor_.presentation.posts.adapters.NewsListAdapter
 
 class NewsFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = NewsFragment()
-    }
-
-    private lateinit var viewModel: NewsViewModel
     private var recyclerView: RecyclerView? = null
 
-    private lateinit var sessionManager: SessionManager
+    private val postStorage by lazy { PostSharedPrefStorage(context = requireContext()) }
+    private val newsRepository by lazy { NewsRepositoryImpl(postStorage = postStorage) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,17 +29,12 @@ class NewsFragment : Fragment() {
         recyclerView = view.findViewById(R.id.rv_newsPage)
         recyclerView?.layoutManager = LinearLayoutManager(context)
         val adapter = NewsListAdapter(context)
-        sessionManager = SessionManager(requireContext())
-        adapter.submitList(sessionManager.fetchPostsList(PostType.NEWS))
+        adapter.submitList(newsRepository.fetchNews())
         recyclerView?.adapter = adapter
 
         return view
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(NewsViewModel::class.java)
 
-    }
 
 }

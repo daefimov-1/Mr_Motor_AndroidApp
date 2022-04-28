@@ -66,6 +66,8 @@ class AccountSettingsPage : AppCompatActivity(), ResponseCallback {
             }
         }
 
+        val user: UserResponse? = userRepository.getUserData()
+
         if (user != null) {
             findViewById<TextView>(R.id.tv_name).text = user.name
             findViewById<TextView>(R.id.tv_email).text = user.email

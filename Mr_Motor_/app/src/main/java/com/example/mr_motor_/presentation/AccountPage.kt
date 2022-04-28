@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
@@ -14,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import com.example.mr_motor_.R
 import com.example.mr_motor_.data.repository.UserRepositoryImpl
-import com.example.mr_motor_.data.storage.SessionManager
 import com.example.mr_motor_.data.storage.UserSharedPrefStorage
 import com.example.mr_motor_.domain.models.UserResponse
 import com.example.mr_motor_.presentation.posts.FavouritePostsPage

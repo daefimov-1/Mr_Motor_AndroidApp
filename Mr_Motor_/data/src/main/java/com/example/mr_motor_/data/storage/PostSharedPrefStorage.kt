@@ -23,10 +23,10 @@ class PostSharedPrefStorage(context: Context) : PostStorage {
         val gson = Gson()
         val json = gson.toJson(list)
         when(type){
-            PostType.NEWS -> editor.putString(SessionManager.NEWS_LIST, json)
-            PostType.COMPETITION -> editor.putString(SessionManager.COMPETITION_LIST, json)
-            PostType.CAR -> editor.putString(SessionManager.CAR_LIST, json)
-            PostType.RACER -> editor.putString(SessionManager.RACER_LIST, json)
+            PostType.NEWS -> editor.putString(NEWS_LIST, json)
+            PostType.COMPETITION -> editor.putString(COMPETITION_LIST, json)
+            PostType.CAR -> editor.putString(CAR_LIST, json)
+            PostType.RACER -> editor.putString(RACER_LIST, json)
         }
 
         editor.apply()
@@ -39,10 +39,10 @@ class PostSharedPrefStorage(context: Context) : PostStorage {
         val gson = Gson()
         var json: String? = null
         when(type){
-            PostType.NEWS -> json = prefs.getString(SessionManager.NEWS_LIST, null)
-            PostType.COMPETITION -> json = prefs.getString(SessionManager.COMPETITION_LIST, null)
-            PostType.CAR -> json = prefs.getString(SessionManager.CAR_LIST, null)
-            PostType.RACER -> json = prefs.getString(SessionManager.RACER_LIST, null)
+            PostType.NEWS -> json = prefs.getString(NEWS_LIST, null)
+            PostType.COMPETITION -> json = prefs.getString(COMPETITION_LIST, null)
+            PostType.CAR -> json = prefs.getString(CAR_LIST, null)
+            PostType.RACER -> json = prefs.getString(RACER_LIST, null)
         }
 
         return gson.fromJson(json, object : TypeToken<List<Post>>() {}.type)

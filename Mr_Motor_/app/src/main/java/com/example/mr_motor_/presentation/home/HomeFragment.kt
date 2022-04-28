@@ -3,7 +3,6 @@ package com.example.mr_motor_.presentation.home
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.mr_motor_.R
 import com.example.mr_motor_.data.repository.UserRepositoryImpl
-import com.example.mr_motor_.data.storage.SessionManager
 import com.example.mr_motor_.data.storage.UserSharedPrefStorage
 import com.example.mr_motor_.domain.models.UserResponse
 import com.example.mr_motor_.presentation.AccountPage

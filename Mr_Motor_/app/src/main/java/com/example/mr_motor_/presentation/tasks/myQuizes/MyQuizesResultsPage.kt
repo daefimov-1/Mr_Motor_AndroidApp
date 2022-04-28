@@ -4,24 +4,16 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mr_motor_.R
 import com.example.mr_motor_.data.repository.UserRepositoryImpl
-import com.example.mr_motor_.data.storage.SessionManager
 import com.example.mr_motor_.data.storage.UserSharedPrefStorage
-import com.example.mr_motor_.domain.models.QuizResultResponse
 import com.example.mr_motor_.domain.models.QuizResultsCallback
-import com.example.mr_motor_.domain.models.login.ApiClient
 import com.example.mr_motor_.domain.models.quiz.QuizResultVO
 import com.example.mr_motor_.domain.usecase.GetQuizzesResultsUseCase
-import com.example.mr_motor_.domain.usecase.GetUserQuizzesUseCase
 import com.example.mr_motor_.presentation.tasks.adapters.MyQuizResultAdapter
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MyQuizesResultsPage : AppCompatActivity(), QuizResultsCallback {
 
