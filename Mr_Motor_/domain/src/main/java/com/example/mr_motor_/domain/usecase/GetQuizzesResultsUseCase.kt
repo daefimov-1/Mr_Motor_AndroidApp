@@ -21,6 +21,5 @@ class GetQuizzesResultsUseCase(private val userRepository: UserRepository, priva
                 callback.response(response.body()?.quizResults)
             }
         })
-
     }
 }

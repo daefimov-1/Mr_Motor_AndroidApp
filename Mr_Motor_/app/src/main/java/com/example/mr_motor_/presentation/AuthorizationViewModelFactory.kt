@@ -10,14 +10,14 @@ import com.example.mr_motor_.domain.usecase.ForgotPasswordUseCase
 import com.example.mr_motor_.domain.usecase.LoginUseCase
 import com.example.mr_motor_.domain.usecase.SignUpUseCase
 
-class AuthorizationViewModelFactory(context: Context, callback: ResponseCallback) : ViewModelProvider.Factory {
+class AuthorizationViewModelFactory(context: Context) : ViewModelProvider.Factory {
 
     private val userStorage by lazy { UserSharedPrefStorage(context = context) }
     private val userRepository by lazy { UserRepositoryImpl(userStorage = userStorage) }
 
-    private val loginUseCase by lazy { LoginUseCase(userRepository = userRepository, callback = callback) }
-    private val signUpUseCase by lazy { SignUpUseCase(callback = callback) }
-    private val forgotPasswordUseCase by lazy { ForgotPasswordUseCase(callback = callback) }
+    private val loginUseCase by lazy { LoginUseCase(userRepository = userRepository) }
+    private val signUpUseCase by lazy { SignUpUseCase() }
+    private val forgotPasswordUseCase by lazy { ForgotPasswordUseCase() }
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return AuthorizationViewModel(

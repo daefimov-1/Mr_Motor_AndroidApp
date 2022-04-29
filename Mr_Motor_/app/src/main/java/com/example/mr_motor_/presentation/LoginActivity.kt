@@ -5,23 +5,21 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.mr_motor_.R
-import com.example.mr_motor_.data.repository.UserRepositoryImpl
-import com.example.mr_motor_.data.storage.UserSharedPrefStorage
-import com.example.mr_motor_.domain.models.ResponseCallback
-import com.example.mr_motor_.domain.usecase.LoginUseCase
 
-class LoginActivity : AppCompatActivity(), ResponseCallback {
+class LoginActivity : AppCompatActivity() {
 
-    private lateinit var email : EditText
-    private lateinit var password : EditText
-    private lateinit var login_button : Button
-    private lateinit var signUp_button : Button
-    private lateinit var forgotPassword_button : Button
+    private lateinit var email: EditText
+    private lateinit var password: EditText
+    private lateinit var loginButton: Button
+    private lateinit var signUpButton: Button
+    private lateinit var forgotPasswordButton: Button
 
-    private lateinit var vm : AuthorizationViewModel
+    private lateinit var vm: AuthorizationViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,41 +30,44 @@ class LoginActivity : AppCompatActivity(), ResponseCallback {
 
         email = findViewById(R.id.et_signUpPage_email)
         password = findViewById(R.id.et_signUpPage_password)
-        login_button = findViewById(R.id.btn_log_in)
-        signUp_button = findViewById(R.id.btn_sign_up)
-        forgotPassword_button = findViewById(R.id.btn_forgot_password)
+        loginButton = findViewById(R.id.btn_log_in)
+        signUpButton = findViewById(R.id.btn_sign_up)
+        forgotPasswordButton = findViewById(R.id.btn_forgot_password)
 
-        vm = ViewModelProvider(this, AuthorizationViewModelFactory(applicationContext, this)).get(AuthorizationViewModel::class.java)
+        vm = ViewModelProvider(this, AuthorizationViewModelFactory(applicationContext)).get(
+            AuthorizationViewModel::class.java
+        )
 
-        login_button.setOnClickListener {
+        vm.resultLive.observe(this, Observer {
+            if (it) {
+                finish()
+            } else {
+                val toast =
+                    Toast.makeText(this@LoginActivity, "Login data is incorrect", Toast.LENGTH_LONG)
+                toast.show()
+            }
+        })
+
+        loginButton.setOnClickListener {
 
             vm.login(email = email.text.toString(), password = password.text.toString())
 
         }
 
-        signUp_button.setOnClickListener {
+        signUpButton.setOnClickListener {
             SignUpPage.start(this)
         }
 
-        forgotPassword_button.setOnClickListener {
+        forgotPasswordButton.setOnClickListener {
             ForgotPasswordPage.start(this)
         }
 
     }
 
-    override fun response(result : Boolean) {
-        if(result){
-            finish()
-        }
-        else{
-            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-        }
-    }
+    companion object {
 
-    companion object{
-
-        fun start(caller: FragmentActivity?){
-            val intent : Intent = Intent(caller, LoginActivity::class.java)
+        fun start(caller: FragmentActivity?) {
+            val intent: Intent = Intent(caller, LoginActivity::class.java)
             caller?.startActivity(intent)
         }
     }
