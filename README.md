@@ -9,6 +9,8 @@ DiffUtil
 SharedAxis  
 CallBacks  
 Clean Architecture  
+MVVM (3 activities)  
+LiveData  
 Mediaplayer  
 Gif (для SplashScreen)  
 AlertDialog  
