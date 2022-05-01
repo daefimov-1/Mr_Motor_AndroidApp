@@ -8,6 +8,7 @@ RecyclerView
 DiffUtil  
 SharedAxis  
 CallBacks  
+Koin(DI)  
 Clean Architecture  
 MVVM (3 activities)  
 LiveData  
