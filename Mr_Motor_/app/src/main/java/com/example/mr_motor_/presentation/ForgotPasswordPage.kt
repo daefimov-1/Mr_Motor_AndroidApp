@@ -12,13 +12,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.mr_motor_.R
 import com.example.mr_motor_.domain.models.ResponseCallback
 import com.example.mr_motor_.domain.usecase.ForgotPasswordUseCase
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ForgotPasswordPage : AppCompatActivity() {
 
     private lateinit var email : EditText
     private lateinit var resetPassword : Button
 
-    private lateinit var vm : AuthorizationViewModel
+    private val vm by viewModel<AuthorizationViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,8 +29,6 @@ class ForgotPasswordPage : AppCompatActivity() {
 
         email = findViewById(R.id.et_forgotPasswordPage_email)
         resetPassword = findViewById(R.id.btn_reset_password)
-
-        vm = ViewModelProvider(this, AuthorizationViewModelFactory(applicationContext)).get(AuthorizationViewModel::class.java)
 
         vm.resultLive.observe(this, Observer {
             val toast : Toast

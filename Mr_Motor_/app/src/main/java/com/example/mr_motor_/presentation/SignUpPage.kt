@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.mr_motor_.R
 import com.example.mr_motor_.domain.models.ResponseCallback
 import com.example.mr_motor_.domain.usecase.SignUpUseCase
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SignUpPage : AppCompatActivity() {
 
@@ -20,7 +21,7 @@ class SignUpPage : AppCompatActivity() {
     private lateinit var password: EditText
     private lateinit var signUpButton: Button
 
-    private lateinit var vm: AuthorizationViewModel
+    private val vm by viewModel<AuthorizationViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,10 +33,6 @@ class SignUpPage : AppCompatActivity() {
         email = findViewById(R.id.et_signUpPage_email)
         password = findViewById(R.id.et_signUpPage_password)
         signUpButton = findViewById(R.id.btn_sign_up)
-
-        vm = ViewModelProvider(this, AuthorizationViewModelFactory(applicationContext)).get(
-            AuthorizationViewModel::class.java
-        )
 
         vm.resultLive.observe(this, Observer {
             val toast: Toast

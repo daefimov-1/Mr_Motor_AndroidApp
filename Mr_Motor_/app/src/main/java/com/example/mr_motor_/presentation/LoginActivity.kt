@@ -8,8 +8,8 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.example.mr_motor_.R
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginActivity : AppCompatActivity() {
 
@@ -19,7 +19,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var signUpButton: Button
     private lateinit var forgotPasswordButton: Button
 
-    private lateinit var vm: AuthorizationViewModel
+    private val vm by viewModel<AuthorizationViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,10 +33,6 @@ class LoginActivity : AppCompatActivity() {
         loginButton = findViewById(R.id.btn_log_in)
         signUpButton = findViewById(R.id.btn_sign_up)
         forgotPasswordButton = findViewById(R.id.btn_forgot_password)
-
-        vm = ViewModelProvider(this, AuthorizationViewModelFactory(applicationContext)).get(
-            AuthorizationViewModel::class.java
-        )
 
         vm.resultLive.observe(this, Observer {
             if (it) {
