@@ -13,16 +13,14 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
 import com.example.mr_motor_.R
-import com.example.mr_motor_.data.repository.UserRepositoryImpl
-import com.example.mr_motor_.data.storage.UserSharedPrefStorage
-import com.example.mr_motor_.domain.models.QuizCallback
 import com.example.mr_motor_.domain.models.quiz.QuizItemVO
 import com.example.mr_motor_.domain.models.quiz.QuizVO
 import com.example.mr_motor_.domain.models.quiz.ResultQuiz
-import com.example.mr_motor_.domain.usecase.GetQuizUseCase
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class QuizQPage : AppCompatActivity(), QuizCallback {
+class QuizQPage : AppCompatActivity() {
 
     private var id_quiz: Long = 0
     private var number_of_question: Int = 0
@@ -43,9 +41,8 @@ class QuizQPage : AppCompatActivity(), QuizCallback {
     private lateinit var vLoading: View
     private lateinit var pbLoading: ProgressBar
 
-    private val userStorage by lazy { UserSharedPrefStorage(context = applicationContext) }
-    private val userRepository by lazy { UserRepositoryImpl(userStorage = userStorage) }
-    private val getQuizUseCase by lazy { GetQuizUseCase(userRepository = userRepository, this) }
+
+    private val vm by viewModel<QuizQPageViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +60,15 @@ class QuizQPage : AppCompatActivity(), QuizCallback {
         cardWithImage = findViewById(R.id.cv_photo)
         vLoading = findViewById(R.id.v_loading)
         pbLoading = findViewById(R.id.pb_loading)
+
+        vm.resultLive.observe(this, Observer {
+            if (it != null) {
+                full_quiz = it
+                list_questions = full_quiz.quizItems
+                settingFirstQuestion()
+                buttonsEnabled(true)
+            }
+        })
 
         buttonsEnabled(false)
 
@@ -140,16 +146,8 @@ class QuizQPage : AppCompatActivity(), QuizCallback {
     private fun startQuiz() {
         id_quiz = intent.getLongExtra(QuizQPage.QUIZ_ID, 1)
 
-        getQuizUseCase.execute(id_quiz = id_quiz)
-    }
 
-    override fun response(result: QuizVO?) {
-        if(result != null){
-            full_quiz = result
-            list_questions = full_quiz.quizItems
-            settingFirstQuestion()
-            buttonsEnabled(true)
-        }
+        vm.getQuiz(id_quiz = id_quiz)
     }
 
     private fun settingFirstQuestion() {

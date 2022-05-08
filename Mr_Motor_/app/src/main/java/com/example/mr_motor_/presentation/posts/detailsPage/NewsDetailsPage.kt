@@ -6,15 +6,13 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
+import androidx.lifecycle.Observer
 import com.example.mr_motor_.R
-import com.example.mr_motor_.data.repository.UserRepositoryImpl
-import com.example.mr_motor_.data.storage.UserSharedPrefStorage
 import com.example.mr_motor_.domain.models.Post
-import com.example.mr_motor_.domain.models.ResponseCallback
-import com.example.mr_motor_.domain.usecase.LikeUseCase
 import com.squareup.picasso.Picasso
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class NewsDetailsPage : AppCompatActivity(), ResponseCallback {
+class NewsDetailsPage : AppCompatActivity() {
 
     private lateinit var news : Post
     private var title : TextView? = null
@@ -23,9 +21,7 @@ class NewsDetailsPage : AppCompatActivity(), ResponseCallback {
     private var image : ImageView? = null
     private var buttonGoToSource : Button? = null
 
-    private val userStorage by lazy { UserSharedPrefStorage(context = this) }
-    private val userRepository by lazy { UserRepositoryImpl(userStorage = userStorage) }
-    private val likeUseCase by lazy { LikeUseCase(userRepository = userRepository, this) }
+    private val vm by viewModel<NewsDetailsPageViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,8 +53,17 @@ class NewsDetailsPage : AppCompatActivity(), ResponseCallback {
                 startActivity(browserIntent)
             }
 
+            vm.resultLive.observe(this, Observer {
+                if(it){
+                    star?.setImageResource(R.drawable.ic_star_favourite)
+                }
+                else{
+                    star?.setImageResource(R.drawable.ic_star)
+                }
+            })
+
             star?.setOnClickListener {
-                likeUseCase.execute(news.id)
+                vm.like(news.id)
             }
         }
 
@@ -72,15 +77,6 @@ class NewsDetailsPage : AppCompatActivity(), ResponseCallback {
                 intent.putExtra(OPEN_NEWS, news)
             }
             caller.startActivity(intent)
-        }
-    }
-
-    override fun response(result: Boolean) {
-        if(result){
-            star?.setImageResource(R.drawable.ic_star_favourite)
-        }
-        else{
-            star?.setImageResource(R.drawable.ic_star)
         }
     }
 }

@@ -9,24 +9,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.mr_motor_.R
 import com.example.mr_motor_.data.repository.UserRepositoryImpl
-import com.example.mr_motor_.data.storage.UserSharedPrefStorage
+import com.example.mr_motor_.data.datasource.storage.UserSharedPrefStorage
 import com.example.mr_motor_.domain.models.quiz.ResultQuiz
 import com.example.mr_motor_.domain.usecase.PostResultOfQuiz
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.roundToInt
 
 class QuizResultPage : AppCompatActivity() {
 
-    private lateinit var result : ResultQuiz
+    private lateinit var result: ResultQuiz
 
-    private lateinit var mConstraintLayout : ConstraintLayout
-    private lateinit var percentageText : TextView
-    private lateinit var nameOfQuiz : TextView
-    private lateinit var amount : TextView
-    private lateinit var tryAgainButton : Button
+    private lateinit var mConstraintLayout: ConstraintLayout
+    private lateinit var percentageText: TextView
+    private lateinit var nameOfQuiz: TextView
+    private lateinit var amount: TextView
+    private lateinit var tryAgainButton: Button
 
-    private val userStorage by lazy { UserSharedPrefStorage(context = applicationContext) }
-    private val userRepository by lazy { UserRepositoryImpl(userStorage = userStorage) }
-    private val postResultUseCase by lazy { PostResultOfQuiz(userRepository = userRepository) }
+    private val vm by viewModel<QuizResultPageViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,19 +39,20 @@ class QuizResultPage : AppCompatActivity() {
         nameOfQuiz = findViewById(R.id.tv_quizResult_title)
         tryAgainButton = findViewById(R.id.btn_try_again)
 
-        if (intent.hasExtra(QuizResultPage.RESULT)){
+        if (intent.hasExtra(QuizResultPage.RESULT)) {
             result = intent.getParcelableExtra(QuizResultPage.RESULT)!!
 
-            var percentage = ((result.right_answers.toFloat() / result.number_of_questions) * 100).roundToInt()
+            var percentage =
+                ((result.right_answers.toFloat() / result.number_of_questions) * 100).roundToInt()
             percentageText.text = "$percentage%"
             amount.text = "${result.right_answers} Out Of ${result.number_of_questions}"
             nameOfQuiz.text = result.quiz_name
 
             (mConstraintLayout.layoutParams as ConstraintLayout.LayoutParams)
-                .matchConstraintPercentWidth = percentage.toFloat() /100
+                .matchConstraintPercentWidth = percentage.toFloat() / 100
             mConstraintLayout.requestLayout()
 
-            postResultUseCase.execute(result.right_answers, result.quiz_id)
+            vm.postResult(result = result)
 
             tryAgainButton.setOnClickListener {
                 QuizQPage.start(this, result.quiz_id)
@@ -61,11 +61,11 @@ class QuizResultPage : AppCompatActivity() {
         }
     }
 
-    companion object{
-        private const val RESULT : String = "QuizResultPage.RESULT"
-        fun start(caller: Activity, result: ResultQuiz? ){
-            val intent : Intent = Intent(caller, QuizResultPage::class.java)
-            if(result != null){
+    companion object {
+        private const val RESULT: String = "QuizResultPage.RESULT"
+        fun start(caller: Activity, result: ResultQuiz?) {
+            val intent: Intent = Intent(caller, QuizResultPage::class.java)
+            if (result != null) {
                 intent.putExtra(RESULT, result)
             }
             caller.startActivity(intent)

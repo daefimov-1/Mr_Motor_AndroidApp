@@ -2,34 +2,20 @@ package com.example.mr_motor_.presentation
 
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.example.mr_motor_.R
-import com.example.mr_motor_.data.repository.NewsRepositoryImpl
-import com.example.mr_motor_.data.repository.UserRepositoryImpl
-import com.example.mr_motor_.data.storage.PostSharedPrefStorage
-import com.example.mr_motor_.data.storage.UserSharedPrefStorage
-import com.example.mr_motor_.domain.models.ResponseCallback
-import com.example.mr_motor_.domain.usecase.LoadNewsUseCase
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import pl.droidsonroids.gif.GifImageView
 
 
-class SplashScreen : AppCompatActivity(), ResponseCallback {
+class SplashScreen : AppCompatActivity() {
 
     private lateinit var mediaPlayer: MediaPlayer
 
-    private val userStorage by lazy { UserSharedPrefStorage(context = applicationContext) }
-    private val userRepository by lazy { UserRepositoryImpl(userStorage = userStorage) }
-
-    private val postStorage by lazy { PostSharedPrefStorage(context = applicationContext) }
-    private val newsRepository by lazy { NewsRepositoryImpl(postStorage = postStorage) }
-
-    private val loadNewsUseCase by lazy {
-        LoadNewsUseCase(
-            newsRepository = newsRepository,
-            userRepository = userRepository,
-            this
-        )
-    }
+    private val vm by viewModel<StartAppViewModel>()
+    private var loadingCount = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,8 +26,28 @@ class SplashScreen : AppCompatActivity(), ResponseCallback {
         val gifImage: GifImageView = findViewById<GifImageView>(R.id.gif_image)
         gifImage.setImageResource(R.drawable.splashgif)
 
+        vm.resultLive.observe(this, Observer {
+            if (it) {
+                loadingCount++
+                Toast.makeText(this@SplashScreen, "$loadingCount loading is successful", Toast.LENGTH_LONG).show()
+            } else {
+                NoInternetPage.start(this@SplashScreen)
+                finish()
+            }
+        })
+
+        vm.lastResultLive.observe(this, Observer {
+            if (it) {
+                MainActivity.start(this@SplashScreen)
+                finish()
+            } else {
+                NoInternetPage.start(this@SplashScreen)
+                finish()
+            }
+        })
+
         playAudio()
-        loadNewsUseCase.execute()
+        vm.loadAllPosts()
     }
 
     private fun playAudio() {
@@ -54,13 +60,4 @@ class SplashScreen : AppCompatActivity(), ResponseCallback {
         mediaPlayer.stop()
     }
 
-    override fun response(result: Boolean) {
-        if (result) {
-            MainActivity.start(this@SplashScreen)
-            finish()
-        } else {
-            NoInternetPage.start(this@SplashScreen)
-            finish()
-        }
-    }
 }

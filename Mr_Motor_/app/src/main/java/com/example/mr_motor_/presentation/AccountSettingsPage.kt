@@ -20,17 +20,17 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import com.example.mr_motor_.R
-import com.example.mr_motor_.data.repository.UserRepositoryImpl
-import com.example.mr_motor_.data.storage.UserSharedPrefStorage
-import com.example.mr_motor_.domain.models.ResponseCallback
 import com.example.mr_motor_.domain.models.UserResponse
-import com.example.mr_motor_.domain.usecase.UpdateUserDataUseCase
+import com.example.mr_motor_.domain.repository.UserRepository
 import com.google.android.material.transition.platform.MaterialSharedAxis
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.ByteArrayOutputStream
 
 
-class AccountSettingsPage : AppCompatActivity(), ResponseCallback {
+class AccountSettingsPage : AppCompatActivity() {
 
     private lateinit var nameEditText: EditText
     private lateinit var saveButton: ImageButton
@@ -39,14 +39,8 @@ class AccountSettingsPage : AppCompatActivity(), ResponseCallback {
 
     private var avatarString: String? = null
 
-    private val userStorage by lazy { UserSharedPrefStorage(context = applicationContext) }
-    private val userRepository by lazy { UserRepositoryImpl(userStorage = userStorage) }
-    private val updateUserDataUseCase by lazy {
-        UpdateUserDataUseCase(
-            userRepository = userRepository,
-            this
-        )
-    }
+    private val userRepository by inject<UserRepository>()
+    private val vm by viewModel<AccountSettingsPageViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -83,15 +77,35 @@ class AccountSettingsPage : AppCompatActivity(), ResponseCallback {
             }
         }
 
+        vm.resultLive.observe(this, Observer {
+            if (it) {
+                val toast: Toast = Toast.makeText(
+                    this@AccountSettingsPage,
+                    "Successfully changed!",
+                    Toast.LENGTH_LONG
+                )
+                toast.show()
+                finish()
+            } else {
+                val toast: Toast = Toast.makeText(
+                    this@AccountSettingsPage,
+                    "Not successfully changed!",
+                    Toast.LENGTH_LONG
+                )
+                toast.show()
+            }
+        })
+
         saveButton.setOnClickListener {
             if (user != null && (nameEditText.text.toString() != user.name || avatarString != null)) {
 
-                updateUserDataUseCase.execute(
+                vm.updateData(
                     name = nameEditText.text.toString(),
                     email = user.email,
                     avatarString = avatarString,
                     userAvatar = user.avatar
                 )
+
 
             }
         }
@@ -267,24 +281,6 @@ class AccountSettingsPage : AppCompatActivity(), ResponseCallback {
         }
     }
 
-    override fun response(result: Boolean) {
-        if (result) {
-            val toast: Toast = Toast.makeText(
-                this@AccountSettingsPage,
-                "Successfully changed!",
-                Toast.LENGTH_LONG
-            )
-            toast.show()
-            finish()
-        } else {
-            val toast: Toast = Toast.makeText(
-                this@AccountSettingsPage,
-                "Not successfully changed!",
-                Toast.LENGTH_LONG
-            )
-            toast.show()
-        }
-    }
 
     companion object {
         fun start(caller: Activity) {

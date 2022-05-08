@@ -4,26 +4,22 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mr_motor_.R
-import com.example.mr_motor_.data.repository.UserRepositoryImpl
-import com.example.mr_motor_.data.storage.UserSharedPrefStorage
-import com.example.mr_motor_.domain.models.Post
-import com.example.mr_motor_.domain.models.PostsCallback
-import com.example.mr_motor_.domain.usecase.LoadLikedPostsUseCase
 import com.example.mr_motor_.presentation.posts.adapters.NewsListAdapter
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class FavouritePostsPage : AppCompatActivity(), PostsCallback {
+class FavouritePostsPage : AppCompatActivity() {
 
     private lateinit var title : TextView
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter : NewsListAdapter
 
-    private val userStorage by lazy { UserSharedPrefStorage(context = this) }
-    private val userRepository by lazy { UserRepositoryImpl(userStorage = userStorage) }
-    private val loadLikedPostsUseCase by lazy { LoadLikedPostsUseCase(userRepository = userRepository, this) }
+    private val vm by viewModel<PostsPageViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,15 +32,17 @@ class FavouritePostsPage : AppCompatActivity(), PostsCallback {
         recyclerView.layoutManager = LinearLayoutManager(this)
         adapter = NewsListAdapter(this)
 
-        loadLikedPostsUseCase.execute()
+        vm.postsListLiveData.observe(this, Observer {
+            if(it != null){
+                adapter.submitList(it)
+            }else{
+                Log.e("LIKED_POSTS", "List<Post> == null")
+            }
+        })
+
+        vm.getLikedPosts()
 
         recyclerView.adapter = adapter
-    }
-
-    override fun response(result: List<Post>?) {
-        if(result != null){
-            adapter.submitList(result)
-        }
     }
 
     companion object{

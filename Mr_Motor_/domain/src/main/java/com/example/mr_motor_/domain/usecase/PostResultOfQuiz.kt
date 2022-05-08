@@ -1,26 +1,10 @@
 package com.example.mr_motor_.domain.usecase
 
-import com.example.mr_motor_.domain.models.login.ApiClient
-import com.example.mr_motor_.domain.repository.UserRepository
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.example.mr_motor_.domain.repository.QuizRepository
 
-class PostResultOfQuiz(private val userRepository: UserRepository) {
+class PostResultOfQuiz(private val quizRepository: QuizRepository) {
 
     fun execute(right_answers: Int, quiz_id: Long) {
-        ApiClient.getApiService()
-            .postResultOfQuiz(right_answers, quiz_id, userRepository.getAuthToken())
-            .enqueue(object :
-                Callback<String> {
-                override fun onFailure(call: Call<String>, t: Throwable) {
-                    t.printStackTrace()
-                }
-
-                override fun onResponse(call: Call<String>, response: Response<String>) {
-
-                }
-            })
-
+        quizRepository.updateResultOfQuiz(right_answers = right_answers, quiz_id = quiz_id)
     }
 }

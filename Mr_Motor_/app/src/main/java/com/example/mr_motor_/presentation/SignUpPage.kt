@@ -8,10 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.example.mr_motor_.R
-import com.example.mr_motor_.domain.models.ResponseCallback
-import com.example.mr_motor_.domain.usecase.SignUpUseCase
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SignUpPage : AppCompatActivity() {

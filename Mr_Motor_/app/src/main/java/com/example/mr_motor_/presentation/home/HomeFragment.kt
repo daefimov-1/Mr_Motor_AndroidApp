@@ -3,20 +3,18 @@ package com.example.mr_motor_.presentation.home
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.example.mr_motor_.R
-import com.example.mr_motor_.data.repository.UserRepositoryImpl
-import com.example.mr_motor_.data.storage.UserSharedPrefStorage
 import com.example.mr_motor_.domain.models.UserResponse
+import com.example.mr_motor_.domain.repository.UserRepository
 import com.example.mr_motor_.presentation.AccountPage
 import com.example.mr_motor_.presentation.LoginActivity
 import com.example.mr_motor_.presentation.MainActivity
+import org.koin.android.ext.android.inject
 
 
 class HomeFragment : Fragment() {
@@ -25,7 +23,6 @@ class HomeFragment : Fragment() {
         fun newInstance() = HomeFragment()
     }
 
-    private lateinit var viewModel: HomeViewModel
     private var accountButton : ImageButton? = null
     private var carButton : View? = null
     private var racerButton : View? = null
@@ -33,8 +30,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var user : UserResponse
 
-    private val userStorage by lazy { UserSharedPrefStorage(context = requireContext()) }
-    private val userRepository by lazy { UserRepositoryImpl(userStorage = userStorage) }
+    private val userRepository by inject<UserRepository>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -107,12 +103,6 @@ class HomeFragment : Fragment() {
         else{
             accountButton?.setImageResource(R.drawable.ic_person_circle)
         }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-        // TODO: Use the ViewModel
     }
 
 }

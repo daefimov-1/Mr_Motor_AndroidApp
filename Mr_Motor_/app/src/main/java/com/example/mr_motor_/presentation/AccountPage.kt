@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
@@ -13,13 +12,13 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import com.example.mr_motor_.R
-import com.example.mr_motor_.data.repository.UserRepositoryImpl
-import com.example.mr_motor_.data.storage.UserSharedPrefStorage
 import com.example.mr_motor_.domain.models.UserResponse
+import com.example.mr_motor_.domain.repository.UserRepository
 import com.example.mr_motor_.presentation.posts.FavouritePostsPage
 import com.example.mr_motor_.presentation.tasks.myQuizes.MyQuizesPage
 import com.example.mr_motor_.presentation.tasks.myQuizes.MyQuizesResultsPage
 import com.google.android.material.transition.platform.MaterialSharedAxis
+import org.koin.android.ext.android.inject
 
 
 class AccountPage : AppCompatActivity() {
@@ -30,8 +29,7 @@ class AccountPage : AppCompatActivity() {
     private lateinit var myQuizzesButton : View
     private lateinit var quizzesResultsButton : View
 
-    private val userStorage by lazy { UserSharedPrefStorage(context = applicationContext) }
-    private val userRepository by lazy { UserRepositoryImpl(userStorage = userStorage) }
+    private val userRepository by inject<UserRepository>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,7 +80,7 @@ class AccountPage : AppCompatActivity() {
             findViewById<TextView>(R.id.tv_email).text = user.email
 
             if(user.avatar.isNotEmpty()){
-                var encoded : String = user.avatar.substring(user.avatar.indexOf(',')+1)
+                val encoded : String = user.avatar.substring(user.avatar.indexOf(',')+1)
 
                 val decodedString: ByteArray = Base64.decode(encoded, Base64.DEFAULT)
                 val bitmap =
@@ -107,7 +105,7 @@ class AccountPage : AppCompatActivity() {
             findViewById<TextView>(R.id.tv_email).text = user.email
 
             if(user.avatar.isNotEmpty()){
-                var encoded : String = user.avatar.substring(user.avatar.indexOf(',')+1)
+                val encoded : String = user.avatar.substring(user.avatar.indexOf(',')+1)
 
                 val decodedString: ByteArray = Base64.decode(encoded, Base64.DEFAULT)
                 val bitmap =
