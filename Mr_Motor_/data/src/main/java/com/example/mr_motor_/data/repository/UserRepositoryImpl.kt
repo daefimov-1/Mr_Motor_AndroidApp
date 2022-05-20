@@ -1,5 +1,6 @@
 package com.example.mr_motor_.data.repository
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.mr_motor_.data.datasource.retrofit.ApiClient
 import com.example.mr_motor_.data.datasource.storage.TokenStorage
@@ -7,6 +8,10 @@ import com.example.mr_motor_.data.datasource.storage.UserStorage
 import com.example.mr_motor_.data.models.*
 import com.example.mr_motor_.domain.models.UserResponse
 import com.example.mr_motor_.domain.repository.UserRepository
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observer
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,47 +26,32 @@ class UserRepositoryImpl(
         password: String,
         resultLiveMutable: MutableLiveData<Boolean>
     ) {
-        ApiClient.getApiService().login(LoginRequest(email = email, password = password))
-            .enqueue(object : Callback<LoginResponse> {
-                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                    t.printStackTrace()
-                    resultLiveMutable.value = false
-                }
-
-                override fun onResponse(
-                    call: Call<LoginResponse>,
-                    response: Response<LoginResponse>
-                ) {
-                    val loginResponse = response.body()
-                    if (loginResponse != null) {
-                        tokenStorage.saveAuthToken(loginResponse.token)
-                        loginSecondPart(loginResponse.token, resultLiveMutable)
+        with(ApiClient) {
+            getApiService().login(LoginRequest(email = email, password = password))
+                .observeOn(Schedulers.io())
+                .doOnNext { loginResponse -> tokenStorage.saveAuthToken(loginResponse.token) }
+                .flatMap { loginResponse ->  getApiService().get_details(loginResponse.token) }
+                .observeOn(Schedulers.io())
+                .doOnNext { userResponse -> userStorage.saveUser(userResponse) }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : Observer<UserResponse> {
+                    override fun onSubscribe(d: Disposable?) {
                     }
 
-                }
-            })
-    }
+                    override fun onNext(t: UserResponse?) {
+                        resultLiveMutable.value = t != null
+                    }
 
-    private fun loginSecondPart(token: String, resultLiveMutable: MutableLiveData<Boolean>) {
-        ApiClient.getApiService().get_details(token).enqueue(object :
-            Callback<UserResponse> {
-            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                t.printStackTrace()
-                resultLiveMutable.value = false
-            }
+                    override fun onError(e: Throwable?) {
+                        Log.e("USER_REPO", e.toString())
+                        resultLiveMutable.value = false
+                    }
 
-            override fun onResponse(
-                call: Call<UserResponse>,
-                response: Response<UserResponse>
-            ) {
-                val userResponse = response.body()
-                if (userResponse != null) {
-                    userStorage.saveUser(userResponse)
-                    resultLiveMutable.value = true
-                }
+                    override fun onComplete() {
+                    }
 
-            }
-        })
+                })
+        }
     }
 
     override fun signUp(

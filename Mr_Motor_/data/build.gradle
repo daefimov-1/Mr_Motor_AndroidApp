@@ -53,4 +53,10 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.squareup.retrofit2:converter-scalars:2.7.1'
     implementation 'com.squareup.okhttp3:okhttp:4.2.1'
+
+    //RXJava
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
+    //Retrofit adapter for RXJava
+    implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
 }

@@ -4,6 +4,7 @@ import com.example.mr_motor_.data.models.*
 import com.example.mr_motor_.domain.models.quiz.QuizVO
 import com.example.mr_motor_.data.models.Constants
 import com.example.mr_motor_.domain.models.UserResponse
+import io.reactivex.rxjava3.core.Observable
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -13,7 +14,7 @@ import retrofit2.http.*
 interface ApiService {
 
     @POST(Constants.LOGIN_URL)
-    fun login(@Body request: LoginRequest): Call<LoginResponse>
+    fun login(@Body request: LoginRequest): Observable<LoginResponse>
 
     @POST(Constants.FORGOTPASSWORD_URL)
     fun forgotPassword(@Body request: ForgotPasswordRequest): Call<String>
@@ -30,7 +31,7 @@ interface ApiService {
     @GET(Constants.DETAILS_URL)
     fun get_details(
         @Header("Authorization") authHeader: String?
-    ): Call<UserResponse>
+    ): Observable<UserResponse>
 
     @GET(Constants.NEWS_URL)
     fun getNews(): Call<PostResponse>
