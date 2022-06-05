@@ -1,5 +1,6 @@
 package com.example.mr_motor_.data.repository
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.mr_motor_.data.datasource.retrofit.ApiClient
 import com.example.mr_motor_.data.datasource.storage.PostStorage
@@ -8,123 +9,192 @@ import com.example.mr_motor_.domain.models.Post
 import com.example.mr_motor_.data.models.PostResponse
 import com.example.mr_motor_.domain.models.PostType
 import com.example.mr_motor_.domain.repository.PostsRepository
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observer
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 class PostsRepositoryImpl(
     private val postStorage: PostStorage,
     private val tokenStorage: TokenStorage
 ) : PostsRepository {
 
-    override fun getPosts(postsListMutableLiveData: MutableLiveData<List<Post>>, postType: PostType) {
+    override fun getPosts(
+        postsListMutableLiveData: MutableLiveData<List<Post>>,
+        postType: PostType
+    ) {
         when (postType) {
-            PostType.NEWS -> postsListMutableLiveData.value = postStorage.fetchPostsList(PostType.NEWS)
-            PostType.CAR -> postsListMutableLiveData.value = postStorage.fetchPostsList(PostType.CAR)
+            PostType.NEWS -> postsListMutableLiveData.value =
+                postStorage.fetchPostsList(PostType.NEWS)
+            PostType.CAR -> postsListMutableLiveData.value =
+                postStorage.fetchPostsList(PostType.CAR)
             PostType.COMPETITION -> postsListMutableLiveData.value =
                 postStorage.fetchPostsList(PostType.COMPETITION)
-            PostType.RACER -> postsListMutableLiveData.value = postStorage.fetchPostsList(PostType.RACER)
+            PostType.RACER -> postsListMutableLiveData.value =
+                postStorage.fetchPostsList(PostType.RACER)
         }
     }
 
     override fun likePost(newsId: Long, resultLiveMutable: MutableLiveData<Boolean>) {
         ApiClient.getApiService()
-            .like(newsId, tokenStorage.fetchAuthToken()).enqueue(object :
-            Callback<String> {
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                t.printStackTrace()
-            }
+            .like(newsId, tokenStorage.fetchAuthToken())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<String> {
+                override fun onSubscribe(d: Disposable?) {
+                }
 
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                val result = response.body().toString()
-                resultLiveMutable.value = result == "Successfully Liked!"
-            }
-        })
+                override fun onNext(t: String?) {
+                    resultLiveMutable.value = t == "Successfully Liked!"
+                }
+
+                override fun onError(e: Throwable?) {
+                    Log.e("POSTS_REPO", e.toString())
+                    resultLiveMutable.value = null
+                }
+
+                override fun onComplete() {
+                }
+
+            })
     }
 
     override fun getLikedPosts(postsListMutableLiveData: MutableLiveData<List<Post>>) {
-        ApiClient.getApiService().getLikedPosts(tokenStorage.fetchAuthToken()).enqueue(object :
-            Callback<PostResponse> {
-            override fun onFailure(call: Call<PostResponse>, t: Throwable) {
-                t.printStackTrace()
-            }
+        ApiClient.getApiService()
+            .getLikedPosts(tokenStorage.fetchAuthToken())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<PostResponse> {
+                override fun onSubscribe(d: Disposable?) {
+                }
 
-            override fun onResponse(call: Call<PostResponse>, response: Response<PostResponse>) {
-                postsListMutableLiveData.value = response.body()?.posts
-            }
-        })
+                override fun onNext(t: PostResponse?) {
+                    postsListMutableLiveData.value = t?.posts
+                }
+
+                override fun onError(e: Throwable?) {
+                    Log.e("POSTS_REPO", e.toString())
+                    postsListMutableLiveData.value = null
+                }
+
+                override fun onComplete() {
+                }
+
+            })
     }
 
     override fun loadingPosts(resultLiveMutable: MutableLiveData<Boolean>, postType: PostType) {
         if (tokenStorage.fetchAuthToken() == "null") {
             when (postType) {
                 PostType.NEWS -> {
-                    ApiClient.getLongerConnectionApiService().getNews().enqueue(object :
-                        Callback<PostResponse> {
-                        override fun onFailure(call: Call<PostResponse>, t: Throwable) {
-                            t.printStackTrace()
-                            resultLiveMutable.value = false
+                    ApiClient.getLongerConnectionApiService()
+                        .getNews()
+                        .observeOn(Schedulers.io())
+                        .doOnNext { postResponse ->
+                            postStorage.savePostsArray(
+                                postResponse.posts,
+                                postType
+                            )
                         }
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(object : Observer<PostResponse> {
+                            override fun onNext(t: PostResponse?) {
+                                resultLiveMutable.value = true
+                            }
 
-                        override fun onResponse(
-                            call: Call<PostResponse>,
-                            response: Response<PostResponse>
-                        ) {
-                            postStorage.savePostsArray(response.body()?.posts, postType)
-                            resultLiveMutable.value = true
-                        }
-                    })
+                            override fun onSubscribe(d: Disposable?) {
+                            }
+
+                            override fun onError(e: Throwable?) {
+                                Log.e("POSTS_REPO", e.toString())
+                                resultLiveMutable.value = false
+                            }
+
+                            override fun onComplete() {
+                            }
+                        })
                 }
                 PostType.CAR -> {
-                    ApiClient.getLongerConnectionApiService().getCars().enqueue(object :
-                        Callback<PostResponse> {
-                        override fun onFailure(call: Call<PostResponse>, t: Throwable) {
-                            t.printStackTrace()
-                            resultLiveMutable.value = false
+                    ApiClient.getLongerConnectionApiService()
+                        .getCars()
+                        .observeOn(Schedulers.io())
+                        .doOnNext { postResponse ->
+                            postStorage.savePostsArray(
+                                postResponse.posts,
+                                postType
+                            )
                         }
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(object : Observer<PostResponse> {
+                            override fun onNext(t: PostResponse?) {
+                                resultLiveMutable.value = true
+                            }
 
-                        override fun onResponse(
-                            call: Call<PostResponse>,
-                            response: Response<PostResponse>
-                        ) {
-                            postStorage.savePostsArray(response.body()?.posts, postType)
-                            resultLiveMutable.value = true
-                        }
-                    })
+                            override fun onSubscribe(d: Disposable?) {
+                            }
+
+                            override fun onError(e: Throwable?) {
+                                Log.e("POSTS_REPO", e.toString())
+                                resultLiveMutable.value = false
+                            }
+
+                            override fun onComplete() {
+                            }
+                        })
                 }
                 PostType.COMPETITION -> {
-                    ApiClient.getLongerConnectionApiService().getCompetitions().enqueue(object :
-                        Callback<PostResponse> {
-                        override fun onFailure(call: Call<PostResponse>, t: Throwable) {
-                            t.printStackTrace()
-                            resultLiveMutable.value = false
+                    ApiClient.getLongerConnectionApiService()
+                        .getCompetitions()
+                        .observeOn(Schedulers.io())
+                        .doOnNext { postResponse ->
+                            postStorage.savePostsArray(
+                                postResponse.posts,
+                                postType
+                            )
                         }
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(object : Observer<PostResponse> {
+                            override fun onNext(t: PostResponse?) {
+                                resultLiveMutable.value = true
+                            }
 
-                        override fun onResponse(
-                            call: Call<PostResponse>,
-                            response: Response<PostResponse>
-                        ) {
-                            postStorage.savePostsArray(response.body()?.posts, postType)
-                            resultLiveMutable.value = true
-                        }
-                    })
+                            override fun onSubscribe(d: Disposable?) {
+                            }
+
+                            override fun onError(e: Throwable?) {
+                                Log.e("POSTS_REPO", e.toString())
+                                resultLiveMutable.value = false
+                            }
+
+                            override fun onComplete() {
+                            }
+                        })
                 }
                 PostType.RACER -> {
-                    ApiClient.getLongerConnectionApiService().getRacers().enqueue(object :
-                        Callback<PostResponse> {
-                        override fun onFailure(call: Call<PostResponse>, t: Throwable) {
-                            t.printStackTrace()
-                            resultLiveMutable.value = false
+                    ApiClient.getLongerConnectionApiService()
+                        .getRacers()
+                        .observeOn(Schedulers.io())
+                        .doOnNext { postResponse ->
+                            postStorage.savePostsArray(
+                                postResponse.posts,
+                                postType
+                            )
                         }
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(object : Observer<PostResponse> {
+                            override fun onNext(t: PostResponse?) {
+                                resultLiveMutable.value = true
+                            }
 
-                        override fun onResponse(
-                            call: Call<PostResponse>,
-                            response: Response<PostResponse>
-                        ) {
-                            postStorage.savePostsArray(response.body()?.posts, postType)
-                            resultLiveMutable.value = true
-                        }
-                    })
+                            override fun onSubscribe(d: Disposable?) {
+                            }
+
+                            override fun onError(e: Throwable?) {
+                                Log.e("POSTS_REPO", e.toString())
+                                resultLiveMutable.value = false
+                            }
+
+                            override fun onComplete() {
+                            }
+                        })
                 }
             }
 
@@ -132,75 +202,115 @@ class PostsRepositoryImpl(
             when (postType) {
                 PostType.NEWS -> {
                     ApiClient.getLongerConnectionApiService()
-                        .getNewsWithToken(tokenStorage.fetchAuthToken()).enqueue(object :
-                        Callback<PostResponse> {
-                        override fun onFailure(call: Call<PostResponse>, t: Throwable) {
-                            t.printStackTrace()
-                            resultLiveMutable.value = false
+                        .getNewsWithToken(tokenStorage.fetchAuthToken())
+                        .observeOn(Schedulers.io())
+                        .doOnNext { postResponse ->
+                            postStorage.savePostsArray(
+                                postResponse.posts,
+                                postType
+                            )
                         }
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(object : Observer<PostResponse> {
+                            override fun onNext(t: PostResponse?) {
+                                resultLiveMutable.value = true
+                            }
 
-                        override fun onResponse(
-                            call: Call<PostResponse>,
-                            response: Response<PostResponse>
-                        ) {
-                            postStorage.savePostsArray(response.body()?.posts, postType)
-                            resultLiveMutable.value = true
-                        }
-                    })
+                            override fun onSubscribe(d: Disposable?) {
+                            }
+
+                            override fun onError(e: Throwable?) {
+                                Log.e("POSTS_REPO", e.toString())
+                                resultLiveMutable.value = false
+                            }
+
+                            override fun onComplete() {
+                            }
+                        })
                 }
                 PostType.CAR -> {
                     ApiClient.getLongerConnectionApiService()
-                        .getCarsWithToken(tokenStorage.fetchAuthToken()).enqueue(object :
-                        Callback<PostResponse> {
-                        override fun onFailure(call: Call<PostResponse>, t: Throwable) {
-                            t.printStackTrace()
-                            resultLiveMutable.value = false
+                        .getCarsWithToken(tokenStorage.fetchAuthToken())
+                        .observeOn(Schedulers.io())
+                        .doOnNext { postResponse ->
+                            postStorage.savePostsArray(
+                                postResponse.posts,
+                                postType
+                            )
                         }
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(object : Observer<PostResponse> {
+                            override fun onNext(t: PostResponse?) {
+                                resultLiveMutable.value = true
+                            }
 
-                        override fun onResponse(
-                            call: Call<PostResponse>,
-                            response: Response<PostResponse>
-                        ) {
-                            postStorage.savePostsArray(response.body()?.posts, postType)
-                            resultLiveMutable.value = true
-                        }
-                    })
+                            override fun onSubscribe(d: Disposable?) {
+                            }
+
+                            override fun onError(e: Throwable?) {
+                                Log.e("POSTS_REPO", e.toString())
+                                resultLiveMutable.value = false
+                            }
+
+                            override fun onComplete() {
+                            }
+                        })
                 }
                 PostType.COMPETITION -> {
                     ApiClient.getLongerConnectionApiService()
-                        .getCompetitionsWithToken(tokenStorage.fetchAuthToken()).enqueue(object :
-                        Callback<PostResponse> {
-                        override fun onFailure(call: Call<PostResponse>, t: Throwable) {
-                            t.printStackTrace()
-                            resultLiveMutable.value = false
+                        .getCompetitionsWithToken(tokenStorage.fetchAuthToken())
+                        .observeOn(Schedulers.io())
+                        .doOnNext { postResponse ->
+                            postStorage.savePostsArray(
+                                postResponse.posts,
+                                postType
+                            )
                         }
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(object : Observer<PostResponse> {
+                            override fun onNext(t: PostResponse?) {
+                                resultLiveMutable.value = true
+                            }
 
-                        override fun onResponse(
-                            call: Call<PostResponse>,
-                            response: Response<PostResponse>
-                        ) {
-                            postStorage.savePostsArray(response.body()?.posts, postType)
-                            resultLiveMutable.value = true
-                        }
-                    })
+                            override fun onSubscribe(d: Disposable?) {
+                            }
+
+                            override fun onError(e: Throwable?) {
+                                Log.e("POSTS_REPO", e.toString())
+                                resultLiveMutable.value = false
+                            }
+
+                            override fun onComplete() {
+                            }
+                        })
                 }
                 PostType.RACER -> {
                     ApiClient.getLongerConnectionApiService()
-                        .getRacersWithToken(tokenStorage.fetchAuthToken()).enqueue(object :
-                        Callback<PostResponse> {
-                        override fun onFailure(call: Call<PostResponse>, t: Throwable) {
-                            t.printStackTrace()
-                            resultLiveMutable.value = false
+                        .getRacersWithToken(tokenStorage.fetchAuthToken())
+                        .observeOn(Schedulers.io())
+                        .doOnNext { postResponse ->
+                            postStorage.savePostsArray(
+                                postResponse.posts,
+                                postType
+                            )
                         }
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(object : Observer<PostResponse> {
+                            override fun onNext(t: PostResponse?) {
+                                resultLiveMutable.value = true
+                            }
 
-                        override fun onResponse(
-                            call: Call<PostResponse>,
-                            response: Response<PostResponse>
-                        ) {
-                            postStorage.savePostsArray(response.body()?.posts, postType)
-                            resultLiveMutable.value = true
-                        }
-                    })
+                            override fun onSubscribe(d: Disposable?) {
+                            }
+
+                            override fun onError(e: Throwable?) {
+                                Log.e("POSTS_REPO", e.toString())
+                                resultLiveMutable.value = false
+                            }
+
+                            override fun onComplete() {
+                            }
+                        })
                 }
             }
 

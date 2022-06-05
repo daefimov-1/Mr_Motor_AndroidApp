@@ -17,89 +17,89 @@ interface ApiService {
     fun login(@Body request: LoginRequest): Observable<LoginResponse>
 
     @POST(Constants.FORGOTPASSWORD_URL)
-    fun forgotPassword(@Body request: ForgotPasswordRequest): Call<String>
+    fun forgotPassword(@Body request: ForgotPasswordRequest): Observable<String>
 
     @POST(Constants.SIGNUP_URL)
-    fun signUp(@Body request: SignUpRequest): Call<UserResponse>
+    fun signUp(@Body request: SignUpRequest): Observable<UserResponse>
 
     @PUT(Constants.UPDATE_URL)
     fun update(
         @Body request: SignUpRequest,
         @Header("Authorization") authHeader: String?
-    ): Call<UserResponse>
+    ): Observable<UserResponse>
 
     @GET(Constants.DETAILS_URL)
-    fun get_details(
+    fun getDetails(
         @Header("Authorization") authHeader: String?
     ): Observable<UserResponse>
 
     @GET(Constants.NEWS_URL)
-    fun getNews(): Call<PostResponse>
+    fun getNews(): Observable<PostResponse>
 
     @GET(Constants.NEWS_URL)
     fun getNewsWithToken(
         @Header("Authorization") authHeader: String?
-    ): Call<PostResponse>
+    ): Observable<PostResponse>
 
     @GET(Constants.COMPETITIONS_URL)
-    fun getCompetitions(): Call<PostResponse>
+    fun getCompetitions(): Observable<PostResponse>
 
     @GET(Constants.COMPETITIONS_URL)
     fun getCompetitionsWithToken(
         @Header("Authorization") authHeader: String?
-    ): Call<PostResponse>
+    ): Observable<PostResponse>
 
     @GET(Constants.RACERS_URL)
-    fun getRacers(): Call<PostResponse>
+    fun getRacers(): Observable<PostResponse>
 
     @GET(Constants.RACERS_URL)
     fun getRacersWithToken(
         @Header("Authorization") authHeader: String?
-    ): Call<PostResponse>
+    ): Observable<PostResponse>
 
     @GET(Constants.CARS_URL)
-    fun getCars(): Call<PostResponse>
+    fun getCars(): Observable<PostResponse>
 
     @GET(Constants.CARS_URL)
     fun getCarsWithToken(
         @Header("Authorization") authHeader: String?
-    ): Call<PostResponse>
+    ): Observable<PostResponse>
 
     @GET(Constants.QUIZ_URL)
-    fun getShortQuizzes(): Call<ShortQuizesResponse>
+    fun getShortQuizzes(): Observable<ShortQuizesResponse>
 
     @GET("quiz/{quiz_id}")
     fun getQuiz(
         @Path("quiz_id") quiz_id: Long,
         @Header("Authorization") authHeader: String?
-    ): Call<QuizVO>
+    ): Observable<QuizVO>
 
     @POST("posts/like")
     fun like(
         @Query("id") id: Long,
         @Header("Authorization") authHeader: String?
-    ): Call<String>
+    ): Observable<String>
 
     @GET("posts/liked")
     fun getLikedPosts(
         @Header("Authorization") authHeader: String?
-    ): Call<PostResponse>
+    ): Observable<PostResponse>
 
     @GET("quiz/results")
     fun getQuizesResults(
         @Header("Authorization") authHeader: String?
-    ): Call<QuizResultResponse>
+    ): Observable<QuizResultResponse>
 
     @GET("quiz/my")
     fun getMyQuizzes(
         @Header("Authorization") authHeader: String?
-    ): Call<ShortQuizesResponse>
+    ): Observable<ShortQuizesResponse>
 
     @POST("quiz/result")
     fun postResultOfQuiz(
         @Query("achieved") achieved: Int,
         @Query("id") id: Long,
         @Header("Authorization") authHeader: String?
-    ): Call<String>
+    ): Observable<String>
 
 }

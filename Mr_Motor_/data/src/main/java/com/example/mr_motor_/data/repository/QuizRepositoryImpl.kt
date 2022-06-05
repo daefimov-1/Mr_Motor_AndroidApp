@@ -1,5 +1,6 @@
 package com.example.mr_motor_.data.repository
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.mr_motor_.data.datasource.retrofit.ApiClient
 import com.example.mr_motor_.data.datasource.storage.TokenStorage
@@ -9,82 +10,100 @@ import com.example.mr_motor_.domain.models.quiz.QuizResultVO
 import com.example.mr_motor_.domain.models.quiz.QuizVO
 import com.example.mr_motor_.domain.models.quiz.ShortQuizVO
 import com.example.mr_motor_.domain.repository.QuizRepository
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observer
+import io.reactivex.rxjava3.disposables.Disposable
 
 class QuizRepositoryImpl(private val tokenStorage: TokenStorage) : QuizRepository {
     override fun getQuizById(id_quiz: Long, resultLiveMutable: MutableLiveData<QuizVO>) {
         ApiClient.getApiService().getQuiz(id_quiz, tokenStorage.fetchAuthToken())
-            .enqueue(object :
-                Callback<QuizVO> {
-                override fun onFailure(call: Call<QuizVO>, t: Throwable) {
-                    t.printStackTrace()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<QuizVO> {
+                override fun onSubscribe(d: Disposable?) {
+                }
+
+                override fun onNext(t: QuizVO?) {
+                    resultLiveMutable.value = t
+                }
+
+                override fun onError(e: Throwable?) {
+                    Log.e("QUIZ_REPO", e.toString())
                     resultLiveMutable.value = null
                 }
 
-                override fun onResponse(call: Call<QuizVO>, response: Response<QuizVO>) {
-                    resultLiveMutable.value = response.body()
+                override fun onComplete() {
                 }
+
             })
     }
 
     override fun getQuizzesResults(resultLiveMutable: MutableLiveData<List<QuizResultVO>>) {
-        ApiClient.getApiService().getQuizesResults(tokenStorage.fetchAuthToken()).enqueue(object :
-            Callback<QuizResultResponse> {
-            override fun onFailure(call: Call<QuizResultResponse>, t: Throwable) {
-                t.printStackTrace()
-            }
+        ApiClient.getApiService().getQuizesResults(tokenStorage.fetchAuthToken())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<QuizResultResponse> {
+                override fun onSubscribe(d: Disposable?) {
+                }
 
-            override fun onResponse(
-                call: Call<QuizResultResponse>,
-                response: Response<QuizResultResponse>
-            ) {
-                resultLiveMutable.value = response.body()?.quizResults
-            }
-        })
+                override fun onNext(t: QuizResultResponse?) {
+                    resultLiveMutable.value = t?.quizResults
+                }
+
+                override fun onError(e: Throwable?) {
+                    Log.e("QUIZ_REPO", e.toString())
+                    resultLiveMutable.value = null
+                }
+
+                override fun onComplete() {
+                }
+
+            })
     }
 
     override fun getUserQuizzes(resultLiveMutable: MutableLiveData<List<ShortQuizVO>>) {
-        ApiClient.getApiService().getMyQuizzes(tokenStorage.fetchAuthToken()).enqueue(object :
-            Callback<ShortQuizesResponse> {
-            override fun onFailure(call: Call<ShortQuizesResponse>, t: Throwable) {
-                t.printStackTrace()
-            }
+        ApiClient.getApiService().getMyQuizzes(tokenStorage.fetchAuthToken())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<ShortQuizesResponse> {
+                override fun onSubscribe(d: Disposable?) {
+                }
 
-            override fun onResponse(
-                call: Call<ShortQuizesResponse>,
-                response: Response<ShortQuizesResponse>
-            ) {
-                resultLiveMutable.value = response.body()?.quizzes
-            }
-        })
+                override fun onNext(t: ShortQuizesResponse?) {
+                    resultLiveMutable.value = t?.quizzes
+                }
+
+                override fun onError(e: Throwable?) {
+                    Log.e("QUIZ_REPO", e.toString())
+                    resultLiveMutable.value = null
+                }
+
+                override fun onComplete() {
+                }
+
+            })
     }
 
     override fun getAllShortQuizzes(resultLiveMutable: MutableLiveData<List<ShortQuizVO>>) {
-        ApiClient.getApiService().getShortQuizzes().enqueue(object : Callback<ShortQuizesResponse> {
-            override fun onFailure(call: Call<ShortQuizesResponse>, t: Throwable) {
-                t.printStackTrace()
-            }
+        ApiClient.getApiService().getShortQuizzes()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<ShortQuizesResponse> {
+                override fun onSubscribe(d: Disposable?) {
+                }
 
-            override fun onResponse(call: Call<ShortQuizesResponse>, response: Response<ShortQuizesResponse>) {
-                resultLiveMutable.value = response.body()?.quizzes
-            }
-        })
+                override fun onNext(t: ShortQuizesResponse?) {
+                    resultLiveMutable.value = t?.quizzes
+                }
+
+                override fun onError(e: Throwable?) {
+                    Log.e("QUIZ_REPO", e.toString())
+                    resultLiveMutable.value = null
+                }
+
+                override fun onComplete() {
+                }
+
+            })
     }
 
     override fun updateResultOfQuiz(right_answers: Int, quiz_id: Long) {
-        ApiClient.getApiService()
-            .postResultOfQuiz(right_answers, quiz_id, tokenStorage.fetchAuthToken())
-            .enqueue(object :
-                Callback<String> {
-                override fun onFailure(call: Call<String>, t: Throwable) {
-                    t.printStackTrace()
-                }
-
-                override fun onResponse(call: Call<String>, response: Response<String>) {
-
-                }
-            })
+        ApiClient.getApiService().postResultOfQuiz(right_answers, quiz_id, tokenStorage.fetchAuthToken())
     }
 }
