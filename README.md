@@ -3,15 +3,16 @@
 С чем я работал:  
 Retrofit  
 SharedPreferences  
+RXJava
+Clean Architecture  
+MVVM  
+LiveData  
 MotionLayout  
 RecyclerView  
 DiffUtil  
 SharedAxis  
 CallBacks  
 Koin(DI)  
-Clean Architecture  
-MVVM  
-LiveData  
 Mediaplayer  
 Gif (для SplashScreen)  
 AlertDialog  
