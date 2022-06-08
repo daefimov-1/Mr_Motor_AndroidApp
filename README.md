@@ -3,7 +3,7 @@
 С чем я работал:  
 Retrofit  
 SharedPreferences  
-RXJava
+RXJava  
 Clean Architecture  
 MVVM  
 LiveData  
