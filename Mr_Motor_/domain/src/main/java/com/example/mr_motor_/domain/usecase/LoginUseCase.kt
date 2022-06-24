@@ -11,9 +11,9 @@ class LoginUseCase(private val userRepository: UserRepository) {
         if(!isEmailValid(email = email)){
             resultLiveMutable.value = false
         }
-//        else if(!isValidPassword(password = password)){
-//            resultLiveMutable.value = false
-//        }
+        else if(!isValidPassword(password = password)){
+            resultLiveMutable.value = false
+        }
         else{
             userRepository.login(
                 email = email,
@@ -21,8 +21,6 @@ class LoginUseCase(private val userRepository: UserRepository) {
                 resultLiveMutable = resultLiveMutable
             )
         }
-
-
     }
 
     private fun isEmailValid(email: String): Boolean {

@@ -13,38 +13,30 @@ import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = intArrayOf(23), manifest = "src/main/AndroidManifest.xml", packageName = "com.example.mr_motor_")
-class LoginUseCaseTest {
+class ForgotPasswordUseCaseTest {
     private val userRepository = mock<UserRepository>()
     private lateinit var resultLiveMutable : MutableLiveData<Boolean>
 
     @Before
     fun doBefore(){
         resultLiveMutable = MutableLiveData<Boolean>()
-        Mockito.`when`(userRepository.login(email = "email@gmail.com", password = "abcABC1234!-=", resultLiveMutable = resultLiveMutable)).then {
+        Mockito.`when`(userRepository.forgotPassword(email = "email@gmail.com", resultLiveMutable = resultLiveMutable)).then {
             changeResult(true)
         }
     }
 
     @Test
     fun emailShouldNotBeValid(){
-        val useCase = LoginUseCase(userRepository = userRepository)
-        useCase.execute(email = "abc", password = "abcABC1234!-=", resultLiveMutable = resultLiveMutable)
+        val useCase = ForgotPasswordUseCase(userRepository = userRepository)
+        useCase.execute(email = "abc", resultLiveMutable = resultLiveMutable)
         val expected = false
         Assert.assertEquals(expected, resultLiveMutable.value)
     }
 
     @Test
-    fun passwordShouldNotBeValid(){
-        val useCase = LoginUseCase(userRepository = userRepository)
-        useCase.execute(email = "email@gmail.com", password = "123", resultLiveMutable = resultLiveMutable)
-        val expected = false
-        Assert.assertEquals(expected, resultLiveMutable.value)
-    }
-
-    @Test
-    fun shouldLogin(){
-        val useCase = LoginUseCase(userRepository = userRepository)
-        useCase.execute(email = "email@gmail.com", password = "abcABC1234!-=", resultLiveMutable = resultLiveMutable)
+    fun shouldRecover(){
+        val useCase = ForgotPasswordUseCase(userRepository = userRepository)
+        useCase.execute(email = "email@gmail.com", resultLiveMutable = resultLiveMutable)
         val expected = true
         Assert.assertEquals(expected, resultLiveMutable.value)
     }
